@@ -53,13 +53,77 @@ const DownloadIcon = () => (
   </svg>
 );
 
+type Prompt = {
+  title: string;
+  prompt: string;
+};
+
+type AspectRatio = {
+  title: string;
+  aspectRatio: string;
+};
+
+const aspectRatios: AspectRatio[] = [
+  {
+    title: "Original",
+    aspectRatio: "",
+  },
+  {
+    title: "16:9",
+    aspectRatio: "16:9",
+  },
+  {
+    title: "4:3",
+    aspectRatio: "4:3",
+  },
+  {
+    title: "1:1",
+    aspectRatio: "1:1",
+  },
+  {
+    title: "9:16",
+    aspectRatio: "9:16",
+  },
+];
+
+const prompts: Prompt[] = [
+  {
+    title: "Default",
+    prompt: "",
+  },
+  {
+    title: "Photo to Anime",
+    prompt:
+      "Transform this photograph into a high-quality anime or manga style illustration. Apply characteristic anime features such as stylized eyes, smooth skin rendering, vibrant colors, and clean line art while maintaining the recognizable features and overall composition of the original subject.",
+  },
+  {
+    title: "Watermark Removal",
+    prompt:
+      "Remove all watermarks, logos, signatures, and text overlays from this image while maintaining the original image quality. Use intelligent content-aware filling techniques to seamlessly reconstruct the areas where watermarks were located, ensuring natural texture and color consistency.",
+  },
+  {
+    title: "Crowd Removal",
+    prompt:
+      "Remove unwanted crowds, tourists, or other people from this image to create clean, unobstructed views. Use advanced content-aware techniques to reconstruct backgrounds and maintain natural scenery flow while preserving the main subject.",
+  },
+  {
+    title: "Photo Restoration",
+    prompt:
+      "Restore this photograph to modern high-quality standards: remove film grain, dust, and scratches, enhance facial details and expressions, improve lighting and contrast, upscale to high resolution, maintain natural skin tones and authentic colors, sharp focus throughout, professional photography quality, clean and crisp details, photorealistic result, 4K output",
+  },
+];
+
 export default function Home() {
   const [uploadedImage, setUploadedImage] = useState<string | null>(null);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
-  const [aspectRatio, setAspectRatio] = useState<string>("1:1");
-  const [aiFeature, setAiFeature] = useState<string>("Photo to Anime");
-  const [prompt, setPrompt] = useState<string>(
-    "Transform this photograph into a high-quality anime or manga style illustration. Apply characteristic anime features such as stylized eyes, smooth skin rendering, vibrant colors, and clean line art while maintaining the recognizable features and overall composition of the original subject."
+  const [aspectRatio, setAspectRatio] = useState<string>(
+    aspectRatios[0].aspectRatio
+  );
+  const [selectedAspectRatioTitle, setSelectedAspectRatioTitle] =
+    useState<string>(aspectRatios[0].title);
+  const [prompt, setPrompt] = useState<string>(prompts[0].prompt);
+  const [selectedPromptTitle, setSelectedPromptTitle] = useState<string>(
+    prompts[0].title
   );
   const [resultImage, setResultImage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -141,29 +205,35 @@ export default function Home() {
     }
   };
 
-  const AspectRatioButton = ({ value }: { value: string }) => (
+  const AspectRatioButton = ({ title, aspectRatio }: AspectRatio) => (
     <button
-      onClick={() => setAspectRatio(value)}
+      onClick={() => {
+        setSelectedAspectRatioTitle(title);
+        setAspectRatio(aspectRatio);
+      }}
       className={`px-4 py-2 rounded-md text-sm transition-colors ${
-        aspectRatio === value
+        selectedAspectRatioTitle === title
           ? "bg-blue-600 text-white"
           : "bg-gray-100 hover:bg-gray-200"
       }`}
     >
-      {value}
+      {title}
     </button>
   );
 
-  const AiFeatureButton = ({ value }: { value: string }) => (
+  const AiFeatureButton = ({ prompt, title }: Prompt) => (
     <button
-      onClick={() => setAiFeature(value)}
+      onClick={() => {
+        setSelectedPromptTitle(title);
+        setPrompt(prompt);
+      }}
       className={`px-4 py-2 rounded-md text-sm transition-colors whitespace-nowrap ${
-        aiFeature === value
+        selectedPromptTitle === title
           ? "bg-blue-600 text-white"
           : "bg-gray-100 hover:bg-gray-200"
       }`}
     >
-      {value}
+      {title}
     </button>
   );
 
@@ -212,29 +282,35 @@ export default function Home() {
           </div>
 
           <div>
-            <h3 className="font-semibold mb-2">Image Requirements</h3>
+            <h3 className="font-semibold mb-2">Set output aspect ratio</h3>
             <div className="flex gap-2">
-              <AspectRatioButton value="16:9" />
-              <AspectRatioButton value="4:3" />
-              <AspectRatioButton value="1:1" />
-              <AspectRatioButton value="9:16" />
+              {aspectRatios.map((aspectRatio) => (
+                <AspectRatioButton
+                  key={aspectRatio.title}
+                  title={aspectRatio.title}
+                  aspectRatio={aspectRatio.aspectRatio}
+                />
+              ))}
             </div>
           </div>
 
           <div>
             <h3 className="font-semibold mb-2">Choose AI Feature</h3>
             <div className="flex gap-2 overflow-x-auto pb-2">
-              <AiFeatureButton value="Default" />
-              <AiFeatureButton value="Photo to Anime" />
-              <AiFeatureButton value="Watermark Removal" />
-              <AiFeatureButton value="Crowd Removal" />
-              <AiFeatureButton value="Photo Restoration" />
+              {prompts.map((prompt) => (
+                <AiFeatureButton
+                  key={prompt.title}
+                  prompt={prompt.prompt}
+                  title={prompt.title}
+                />
+              ))}
             </div>
           </div>
 
           <div>
             <h3 className="font-semibold mb-2">Prompt (Click to edit)</h3>
             <textarea
+              placeholder="Enter your prompt in English"
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
               className="w-full h-32 p-3 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"

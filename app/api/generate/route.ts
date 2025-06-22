@@ -24,15 +24,25 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const apiRequestBody = {
+    const apiRequestBody: {
+      model: string;
+      prompt: string;
+      aspect_ratio?: string;
+    } = {
       model: "flux-kontext-pro",
       prompt: prompt,
-      aspect_ratio: aspectRatio || "1:1",
+      // aspect_ratio: aspectRatio,
       // Add other optional parameters from your python script if needed
       // output_format: "png",
       // safety_tolerance: 2,
       // prompt_upsampling: false,
     };
+
+    if (aspectRatio) {
+      apiRequestBody.aspect_ratio = aspectRatio;
+    }
+
+    console.log("apiRequestBody", JSON.stringify(apiRequestBody));
 
     const response = await fetch(API_URL, {
       method: "POST",
