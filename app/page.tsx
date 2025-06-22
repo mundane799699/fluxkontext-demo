@@ -1,103 +1,302 @@
+"use client";
+
 import Image from "next/image";
+import { useState, ChangeEvent, useRef } from "react";
+
+const CloseIcon = () => (
+  <svg
+    width="12"
+    height="12"
+    viewBox="0 0 12 12"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M1 1L11 11M11 1L1 11"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+
+const DownloadIcon = () => (
+  <svg
+    width="16"
+    height="16"
+    viewBox="0 0 16 16"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M4 12.5H12"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M8 3.5V9.5"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M6 7.5L8 9.5L10 7.5"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [uploadedImage, setUploadedImage] = useState<string | null>(null);
+  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+  const [aspectRatio, setAspectRatio] = useState<string>("1:1");
+  const [aiFeature, setAiFeature] = useState<string>("Photo to Anime");
+  const [prompt, setPrompt] = useState<string>(
+    "Transform this photograph into a high-quality anime or manga style illustration. Apply characteristic anime features such as stylized eyes, smooth skin rendering, vibrant colors, and clean line art while maintaining the recognizable features and overall composition of the original subject."
+  );
+  const [resultImage, setResultImage] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+  const handleImageUpload = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setUploadedFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setUploadedImage(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleCreateImage = async () => {
+    if (!uploadedFile) {
+      setError("Please upload an image first.");
+      return;
+    }
+
+    setIsLoading(true);
+    setResultImage(null);
+    setError(null);
+
+    try {
+      // Step 1: Upload image to get URL
+      const formData = new FormData();
+      formData.append("file", uploadedFile);
+
+      const uploadResponse = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!uploadResponse.ok) {
+        const errorData = await uploadResponse.json();
+        throw new Error(errorData.error || "Failed to upload image.");
+      }
+
+      const { url: imageUrl } = await uploadResponse.json();
+
+      // Step 2: Call generate API with the image URL in the prompt
+      const fullPrompt = `${imageUrl} ${prompt}`;
+
+      const generateResponse = await fetch("/api/generate", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          prompt: fullPrompt,
+          aspectRatio: aspectRatio,
+        }),
+      });
+
+      if (!generateResponse.ok) {
+        const errorData = await generateResponse.json();
+        throw new Error(
+          errorData.error ||
+            "An unknown error occurred during image generation."
+        );
+      }
+
+      const result = await generateResponse.json();
+
+      if (result.url) {
+        setResultImage(result.url);
+      } else {
+        throw new Error("Could not find an image URL in the response.");
+      }
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const AspectRatioButton = ({ value }: { value: string }) => (
+    <button
+      onClick={() => setAspectRatio(value)}
+      className={`px-4 py-2 rounded-md text-sm transition-colors ${
+        aspectRatio === value
+          ? "bg-blue-600 text-white"
+          : "bg-gray-100 hover:bg-gray-200"
+      }`}
+    >
+      {value}
+    </button>
+  );
+
+  const AiFeatureButton = ({ value }: { value: string }) => (
+    <button
+      onClick={() => setAiFeature(value)}
+      className={`px-4 py-2 rounded-md text-sm transition-colors whitespace-nowrap ${
+        aiFeature === value
+          ? "bg-blue-600 text-white"
+          : "bg-gray-100 hover:bg-gray-200"
+      }`}
+    >
+      {value}
+    </button>
+  );
+
+  return (
+    <div className="bg-gray-50 min-h-screen text-gray-800 p-4 sm:p-8 font-sans">
+      <main className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
+        {/* Left Panel */}
+        <div className="bg-white p-6 rounded-xl shadow space-y-6">
+          <h2 className="text-xl font-semibold">Upload Photo</h2>
+
+          <div
+            className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center h-60 flex items-center justify-center relative cursor-pointer hover:border-blue-500 transition"
+            onClick={() => fileInputRef.current?.click()}
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={handleImageUpload}
+              className="hidden"
+              accept="image/png, image/jpeg, image/webp"
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            {uploadedImage ? (
+              <>
+                <Image
+                  src={uploadedImage}
+                  alt="Uploaded preview"
+                  layout="fill"
+                  objectFit="contain"
+                  className="rounded-md"
+                />
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setUploadedImage(null);
+                    setUploadedFile(null);
+                    if (fileInputRef.current) fileInputRef.current.value = "";
+                  }}
+                  className="absolute top-2 right-2 bg-white rounded-full p-1.5 shadow-md text-gray-600 hover:text-black transition-colors"
+                >
+                  <CloseIcon />
+                </button>
+              </>
+            ) : (
+              <p className="text-gray-500">Click to upload an image</p>
+            )}
+          </div>
+
+          <div>
+            <h3 className="font-semibold mb-2">Image Requirements</h3>
+            <div className="flex gap-2">
+              <AspectRatioButton value="16:9" />
+              <AspectRatioButton value="4:3" />
+              <AspectRatioButton value="1:1" />
+              <AspectRatioButton value="9:16" />
+            </div>
+          </div>
+
+          <div>
+            <h3 className="font-semibold mb-2">Choose AI Feature</h3>
+            <div className="flex gap-2 overflow-x-auto pb-2">
+              <AiFeatureButton value="Default" />
+              <AiFeatureButton value="Photo to Anime" />
+              <AiFeatureButton value="Watermark Removal" />
+              <AiFeatureButton value="Crowd Removal" />
+              <AiFeatureButton value="Photo Restoration" />
+            </div>
+          </div>
+
+          <div>
+            <h3 className="font-semibold mb-2">Prompt (Click to edit)</h3>
+            <textarea
+              value={prompt}
+              onChange={(e) => setPrompt(e.target.value)}
+              className="w-full h-32 p-3 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+            />
+          </div>
+
+          <button
+            onClick={handleCreateImage}
+            disabled={isLoading || !uploadedImage}
+            className="w-full bg-blue-600 text-white font-bold py-3 rounded-lg hover:bg-blue-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
           >
-            Read our docs
-          </a>
+            {isLoading ? "Generating..." : "Create Image"}
+          </button>
+        </div>
+
+        {/* Right Panel */}
+        <div className="bg-white p-6 rounded-xl shadow flex flex-col">
+          <h2 className="text-xl font-semibold">FLUX KONTENT Result</h2>
+          <div className="flex-grow flex flex-col items-center justify-center mt-4">
+            <div className="w-full min-h-[24rem] bg-gray-100 rounded-lg flex items-center justify-center relative overflow-hidden">
+              {isLoading && (
+                <div className="animate-pulse text-gray-500">
+                  Generating, please wait...
+                </div>
+              )}
+              {error && (
+                <div className="text-red-500 p-4 text-center">{error}</div>
+              )}
+              {!isLoading && !error && resultImage && (
+                <Image
+                  src={resultImage}
+                  alt="Generated result"
+                  layout="fill"
+                  objectFit="contain"
+                />
+              )}
+              {!isLoading && !error && !resultImage && (
+                <p className="text-sm text-orange-500 font-semibold px-4 text-center">
+                  Image generation takes 1-3 min. Please don&apos;t close this
+                  tab.
+                </p>
+              )}
+            </div>
+            <div className="w-full grid grid-cols-2 gap-4 mt-6">
+              <a
+                href={resultImage || "#"}
+                download="generated_image.png"
+                className={`w-full bg-gray-200 py-3 rounded-lg font-semibold text-gray-700 hover:bg-gray-300 transition-colors flex items-center justify-center gap-2 ${
+                  !resultImage ? "opacity-50 cursor-not-allowed" : ""
+                }`}
+                onClick={(e) => !resultImage && e.preventDefault()}
+              >
+                <DownloadIcon />
+                download result
+              </a>
+              <button className="w-full bg-gray-200 py-3 rounded-lg font-semibold text-gray-700 hover:bg-gray-300 transition-colors">
+                My Assets
+              </button>
+            </div>
+          </div>
         </div>
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
     </div>
   );
 }
