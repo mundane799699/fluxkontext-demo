@@ -86,7 +86,7 @@ const aspectRatios: AspectRatio[] = [
   },
 ];
 
-const prompts: Prompt[] = [
+const promptConfigs: Prompt[] = [
   {
     title: "Default",
     prompt: "",
@@ -121,14 +121,38 @@ export default function Home() {
   );
   const [selectedAspectRatioTitle, setSelectedAspectRatioTitle] =
     useState<string>(aspectRatios[0].title);
-  const [prompt, setPrompt] = useState<string>(prompts[0].prompt);
+  const [prompt, setPrompt] = useState<string>(promptConfigs[0].prompt);
   const [selectedPromptTitle, setSelectedPromptTitle] = useState<string>(
-    prompts[0].title
+    promptConfigs[0].title
   );
   const [resultImage, setResultImage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [isDownloading, setIsDownloading] = useState<boolean>(false);
+
+  const handleDownload = async () => {
+    if (!resultImage || isDownloading) return;
+
+    setIsDownloading(true);
+    try {
+      const response = await fetch(resultImage);
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "generated_image.png";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error("Download failed", err);
+      setError("Failed to download image.");
+    } finally {
+      setIsDownloading(false);
+    }
+  };
 
   const handleImageUpload = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -297,11 +321,11 @@ export default function Home() {
           <div>
             <h3 className="font-semibold mb-2">Choose AI Feature</h3>
             <div className="flex gap-2 overflow-x-auto pb-2">
-              {prompts.map((prompt) => (
+              {promptConfigs.map((config) => (
                 <AiFeatureButton
-                  key={prompt.title}
-                  prompt={prompt.prompt}
-                  title={prompt.title}
+                  key={config.title}
+                  prompt={config.prompt}
+                  title={config.title}
                 />
               ))}
             </div>
@@ -355,17 +379,18 @@ export default function Home() {
               )}
             </div>
             <div className="w-full grid grid-cols-2 gap-4 mt-6">
-              <a
-                href={resultImage || "#"}
-                download="generated_image.png"
+              <button
+                onClick={handleDownload}
+                disabled={!resultImage || isDownloading}
                 className={`w-full bg-gray-200 py-3 rounded-lg font-semibold text-gray-700 hover:bg-gray-300 transition-colors flex items-center justify-center gap-2 ${
-                  !resultImage ? "opacity-50 cursor-not-allowed" : ""
+                  !resultImage || isDownloading
+                    ? "opacity-50 cursor-not-allowed"
+                    : ""
                 }`}
-                onClick={(e) => !resultImage && e.preventDefault()}
               >
                 <DownloadIcon />
-                download result
-              </a>
+                {isDownloading ? "Downloading..." : "download result"}
+              </button>
               <button className="w-full bg-gray-200 py-3 rounded-lg font-semibold text-gray-700 hover:bg-gray-300 transition-colors">
                 My Assets
               </button>
