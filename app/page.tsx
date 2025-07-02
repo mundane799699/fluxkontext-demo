@@ -2,56 +2,8 @@
 
 import Image from "next/image";
 import { useState, ChangeEvent, useRef } from "react";
-
-const CloseIcon = () => (
-  <svg
-    width="12"
-    height="12"
-    viewBox="0 0 12 12"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <path
-      d="M1 1L11 11M11 1L1 11"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </svg>
-);
-
-const DownloadIcon = () => (
-  <svg
-    width="16"
-    height="16"
-    viewBox="0 0 16 16"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <path
-      d="M4 12.5H12"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-    <path
-      d="M8 3.5V9.5"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-    <path
-      d="M6 7.5L8 9.5L10 7.5"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </svg>
-);
+import CloseIcon from "@/components/CloseIcon";
+import DownloadIcon from "@/components/DownloadIcon";
 
 type Prompt = {
   title: string;
