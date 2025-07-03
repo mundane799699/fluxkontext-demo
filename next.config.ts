@@ -7,10 +7,10 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: "https",
         hostname: "fal.media",
-        port: "",
-        pathname: "/**",
+      },
+      {
+        hostname: "lh3.googleusercontent.com",
       },
     ],
   },
