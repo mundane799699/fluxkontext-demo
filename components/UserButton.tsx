@@ -3,6 +3,13 @@
 import { authClient } from "@/lib/auth-client";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Spinner from "@/components/Spinner";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export function UserButton() {
   const { data: session, isPending, error, refetch } = authClient.useSession();
@@ -47,15 +54,28 @@ export function UserButton() {
         </button>
       )}
       {!isPending && session && (
-        <Avatar className="w-10 h-10">
-          <AvatarImage
-            src={session.user?.image || ""}
-            alt={session.user?.name || "avatar"}
-          />
-          <AvatarFallback className="bg-blue-500 text-white font-semibold">
-            {session.user?.name?.charAt(0).toUpperCase() || "U"}
-          </AvatarFallback>
-        </Avatar>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Avatar className="w-10 h-10 hover:cursor-pointer">
+              <AvatarImage
+                src={session.user?.image || ""}
+                alt={session.user?.name || "avatar"}
+              />
+              <AvatarFallback className="bg-blue-500 text-white font-semibold">
+                {session.user?.name?.charAt(0).toUpperCase() || "U"}
+              </AvatarFallback>
+            </Avatar>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="center">
+            <DropdownMenuItem>{session.user?.name}</DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>User Center</DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={() => authClient.signOut()}>
+              Sign Out
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       )}
     </div>
   );
