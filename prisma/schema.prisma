@@ -25,7 +25,7 @@ model User {
   updatedAt     DateTime
   sessions      Session[]
   accounts      Account[]
-
+  credit        UserCredit?
   @@unique([email])
   @@map("user")
 }
@@ -73,4 +73,15 @@ model Verification {
   updatedAt  DateTime?
 
   @@map("verification")
+}
+
+model UserCredit {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  credits   Int      @default(0)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("user_credit")
 }
