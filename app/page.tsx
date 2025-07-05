@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useState, ChangeEvent, useRef, useEffect } from "react";
 import CloseIcon from "@/components/CloseIcon";
 import DownloadIcon from "@/components/DownloadIcon";
@@ -319,12 +318,10 @@ export default function Home() {
             />
             {uploadedImage ? (
               <>
-                <Image
+                <img
                   src={uploadedImage}
                   alt="Uploaded preview"
-                  layout="fill"
-                  objectFit="contain"
-                  className="rounded-md"
+                  className="absolute top-0 left-0 w-full h-full object-contain rounded-md"
                 />
                 <button
                   onClick={(e) => {
@@ -390,7 +387,7 @@ export default function Home() {
 
         {/* Right Panel */}
         <div className="bg-white p-6 rounded-xl shadow flex flex-col">
-          <h2 className="text-xl font-semibold">FLUX KONTENT Result</h2>
+          <h2 className="text-xl font-semibold">FLUX KONTEXT Result</h2>
           <div className="flex-grow flex flex-col items-center justify-center mt-4">
             <div className="w-full min-h-[24rem] bg-gray-100 rounded-lg flex items-center justify-center relative overflow-hidden">
               {isLoading && (
@@ -402,11 +399,10 @@ export default function Home() {
                 <div className="text-red-500 p-4 text-center">{error}</div>
               )}
               {!isLoading && !error && resultImage && (
-                <Image
+                <img
                   src={resultImage}
                   alt="Generated result"
-                  layout="fill"
-                  objectFit="contain"
+                  className="absolute top-0 left-0 w-full h-full object-contain"
                 />
               )}
               {!isLoading && !error && !resultImage && (
