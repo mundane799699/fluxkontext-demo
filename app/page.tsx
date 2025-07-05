@@ -5,7 +5,6 @@ import { useState, ChangeEvent, useRef } from "react";
 import CloseIcon from "@/components/CloseIcon";
 import DownloadIcon from "@/components/DownloadIcon";
 import { authClient } from "@/lib/auth-client";
-import { UserButton } from "@/components/UserButton";
 
 type Prompt = {
   title: string;
@@ -215,17 +214,8 @@ export default function Home() {
     </button>
   );
 
-  const handleGoogleSignIn = async () => {
-    await authClient.signIn.social({
-      provider: "google",
-    });
-  };
-
   return (
     <div className="bg-gray-50 min-h-screen text-gray-800 p-4 sm:p-8 font-sans">
-      <header className="max-w-7xl mx-auto mb-8 flex justify-end items-center">
-        <UserButton />
-      </header>
       <main className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
         {/* Left Panel */}
         <div className="bg-white p-6 rounded-xl shadow space-y-6">

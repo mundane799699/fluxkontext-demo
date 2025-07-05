@@ -3,6 +3,7 @@
 import { authClient } from "@/lib/auth-client";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Spinner from "@/components/Spinner";
+import Link from "next/link";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -69,7 +70,9 @@ export function UserButton() {
           <DropdownMenuContent align="center">
             <DropdownMenuItem>{session.user?.name}</DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>User Center</DropdownMenuItem>
+            <DropdownMenuItem>
+              <Link href="/userCenter/my-credits">User Center</Link>
+            </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={() => authClient.signOut()}>
               Sign Out
