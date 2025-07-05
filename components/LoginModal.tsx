@@ -12,10 +12,16 @@ import {
 interface LoginModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onBeforeLogin?: () => void;
 }
 
-export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
+export default function LoginModal({
+  isOpen,
+  onClose,
+  onBeforeLogin,
+}: LoginModalProps) {
   const handleGoogleLogin = async () => {
+    onBeforeLogin?.();
     try {
       await authClient.signIn.social({
         provider: "google",

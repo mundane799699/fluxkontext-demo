@@ -1,11 +1,12 @@
 "use client";
 
 import Image from "next/image";
-import { useState, ChangeEvent, useRef } from "react";
+import { useState, ChangeEvent, useRef, useEffect } from "react";
 import CloseIcon from "@/components/CloseIcon";
 import DownloadIcon from "@/components/DownloadIcon";
 import LoginModal from "@/components/LoginModal";
 import { authClient } from "@/lib/auth-client";
+import { useAuthStore } from "@/store/use-auth";
 
 type Prompt = {
   title: string;
@@ -68,6 +69,7 @@ const promptConfigs: Prompt[] = [
 ];
 
 export default function Home() {
+  const { user } = useAuthStore();
   const [uploadedImage, setUploadedImage] = useState<string | null>(null);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [aspectRatio, setAspectRatio] = useState<string>(
@@ -85,6 +87,28 @@ export default function Home() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isDownloading, setIsDownloading] = useState<boolean>(false);
   const [showLoginModal, setShowLoginModal] = useState<boolean>(false);
+
+  useEffect(() => {
+    const pendingDataJSON = localStorage.getItem("pending-generation-data");
+    if (pendingDataJSON) {
+      localStorage.removeItem("pending-generation-data");
+      try {
+        const pendingData = JSON.parse(pendingDataJSON);
+        if (pendingData.uploadedImage) {
+          setUploadedImage(pendingData.uploadedImage);
+          setAspectRatio(pendingData.aspectRatio);
+          setSelectedAspectRatioTitle(pendingData.selectedAspectRatioTitle);
+          setPrompt(pendingData.prompt);
+          setSelectedPromptTitle(pendingData.selectedPromptTitle);
+        }
+      } catch (error) {
+        console.error(
+          "Failed to restore pending data from localStorage",
+          error
+        );
+      }
+    }
+  }, []);
 
   const handleDownload = async () => {
     if (!resultImage || isDownloading) return;
@@ -128,6 +152,11 @@ export default function Home() {
 
     if (!uploadedFile) {
       setError("Please upload an image first.");
+      return;
+    }
+
+    if (!user) {
+      setShowLoginModal(true);
       return;
     }
 
@@ -225,6 +254,24 @@ export default function Home() {
       {title}
     </button>
   );
+
+  const handleBeforeLogin = () => {
+    if (uploadedFile && uploadedImage) {
+      const stateToSave = {
+        uploadedImage,
+        fileName: uploadedFile.name,
+        fileType: uploadedFile.type,
+        aspectRatio,
+        selectedAspectRatioTitle,
+        prompt,
+        selectedPromptTitle,
+      };
+      localStorage.setItem(
+        "pending-generation-data",
+        JSON.stringify(stateToSave)
+      );
+    }
+  };
 
   return (
     <div className="bg-gray-50 min-h-screen text-gray-800 p-4 sm:p-8 font-sans">
@@ -367,6 +414,7 @@ export default function Home() {
       <LoginModal
         isOpen={showLoginModal}
         onClose={() => setShowLoginModal(false)}
+        onBeforeLogin={handleBeforeLogin}
       />
     </div>
   );

@@ -11,14 +11,32 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useAuthStore } from "@/store/use-auth";
+import { useEffect } from "react";
 
 export function UserButton() {
   const { data: session, isPending, error, refetch } = authClient.useSession();
+  const setUser = useAuthStore((state) => state.setUser);
+  const setIsPending = useAuthStore((state) => state.setIsPending);
+
+  useEffect(() => {
+    setIsPending(isPending);
+    if (session?.user) {
+      setUser(session.user as any);
+    } else {
+      setUser(null);
+    }
+  }, [session, isPending, setUser, setIsPending]);
 
   const handleGoogleSignIn = async () => {
     await authClient.signIn.social({
       provider: "google",
     });
+  };
+
+  const handleSignOut = async () => {
+    await authClient.signOut();
+    setUser(null);
   };
 
   return (
@@ -74,7 +92,7 @@ export function UserButton() {
               <Link href="/userCenter/my-credits">User Center</Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => authClient.signOut()}>
+            <DropdownMenuItem onClick={handleSignOut}>
               Sign Out
             </DropdownMenuItem>
           </DropdownMenuContent>
