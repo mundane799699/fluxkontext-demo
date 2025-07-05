@@ -5,6 +5,7 @@ import { useState, ChangeEvent, useRef, useEffect } from "react";
 import CloseIcon from "@/components/CloseIcon";
 import DownloadIcon from "@/components/DownloadIcon";
 import LoginModal from "@/components/LoginModal";
+import { findClosestAspectRatio } from "@/lib/image-utils";
 import { authClient } from "@/lib/auth-client";
 import { useAuthStore } from "@/store/use-auth";
 
@@ -201,6 +202,13 @@ export default function Home() {
 
       // Step 2: Call generate API with the image URL in the prompt
       const fullPrompt = `${imageUrl} ${prompt}`;
+      let aspectRatioToUse = aspectRatio;
+      if (!aspectRatioToUse && uploadedImage) {
+        aspectRatioToUse = await findClosestAspectRatio(uploadedImage);
+      } else if (!aspectRatioToUse) {
+        // Fallback for when no image is uploaded and no ratio is selected
+        aspectRatioToUse = "16:9";
+      }
 
       const generateResponse = await fetch("/api/generate", {
         method: "POST",
@@ -209,7 +217,7 @@ export default function Home() {
         },
         body: JSON.stringify({
           prompt: fullPrompt,
-          aspectRatio: aspectRatio,
+          aspectRatio: aspectRatioToUse,
         }),
       });
 
