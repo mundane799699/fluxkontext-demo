@@ -27,7 +27,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased h-screen`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen`}
       >
         <header className="bg-white z-50 fixed top-0 left-0 right-0 flex justify-between items-center py-3 px-12 border-b border-gray-200 h-16">
           <Link href="/">

@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useState, ChangeEvent, useRef } from "react";
 import CloseIcon from "@/components/CloseIcon";
 import DownloadIcon from "@/components/DownloadIcon";
+import LoginModal from "@/components/LoginModal";
 import { authClient } from "@/lib/auth-client";
 
 type Prompt = {
@@ -83,6 +84,7 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isDownloading, setIsDownloading] = useState<boolean>(false);
+  const [showLoginModal, setShowLoginModal] = useState<boolean>(false);
 
   const handleDownload = async () => {
     if (!resultImage || isDownloading) return;
@@ -120,6 +122,10 @@ export default function Home() {
   };
 
   const handleCreateImage = async () => {
+    if (isLoading) {
+      return;
+    }
+
     if (!uploadedFile) {
       setError("Please upload an image first.");
       return;
@@ -159,6 +165,12 @@ export default function Home() {
           aspectRatio: aspectRatio,
         }),
       });
+
+      if (generateResponse.status === 401) {
+        setShowLoginModal(true);
+        setIsLoading(false);
+        return;
+      }
 
       if (!generateResponse.ok) {
         const errorData = await generateResponse.json();
@@ -351,6 +363,11 @@ export default function Home() {
           </div>
         </div>
       </main>
+
+      <LoginModal
+        isOpen={showLoginModal}
+        onClose={() => setShowLoginModal(false)}
+      />
     </div>
   );
 }
