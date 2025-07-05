@@ -89,25 +89,38 @@ export default function Home() {
   const [showLoginModal, setShowLoginModal] = useState<boolean>(false);
 
   useEffect(() => {
-    const pendingDataJSON = localStorage.getItem("pending-generation-data");
-    if (pendingDataJSON) {
-      localStorage.removeItem("pending-generation-data");
-      try {
-        const pendingData = JSON.parse(pendingDataJSON);
-        if (pendingData.uploadedImage) {
-          setUploadedImage(pendingData.uploadedImage);
-          setAspectRatio(pendingData.aspectRatio);
-          setSelectedAspectRatioTitle(pendingData.selectedAspectRatioTitle);
-          setPrompt(pendingData.prompt);
-          setSelectedPromptTitle(pendingData.selectedPromptTitle);
+    const restorePendingData = async () => {
+      const pendingDataJSON = localStorage.getItem("pending-generation-data");
+      if (pendingDataJSON) {
+        localStorage.removeItem("pending-generation-data");
+        try {
+          const pendingData = JSON.parse(pendingDataJSON);
+          if (pendingData.uploadedImage) {
+            setUploadedImage(pendingData.uploadedImage);
+            setAspectRatio(pendingData.aspectRatio);
+            setSelectedAspectRatioTitle(pendingData.selectedAspectRatioTitle);
+            setPrompt(pendingData.prompt);
+            setSelectedPromptTitle(pendingData.selectedPromptTitle);
+
+            if (pendingData.fileName && pendingData.fileType) {
+              const response = await fetch(pendingData.uploadedImage);
+              const blob = await response.blob();
+              const file = new File([blob], pendingData.fileName, {
+                type: pendingData.fileType,
+              });
+              setUploadedFile(file);
+            }
+          }
+        } catch (error) {
+          console.error(
+            "Failed to restore pending data from localStorage",
+            error
+          );
         }
-      } catch (error) {
-        console.error(
-          "Failed to restore pending data from localStorage",
-          error
-        );
       }
-    }
+    };
+
+    restorePendingData();
   }, []);
 
   const handleDownload = async () => {
@@ -147,6 +160,11 @@ export default function Home() {
 
   const handleCreateImage = async () => {
     if (isLoading) {
+      return;
+    }
+
+    if (!prompt) {
+      setError("Please enter a prompt.");
       return;
     }
 
