@@ -55,7 +55,7 @@ export function UserButton() {
         </button>
       )}
       {!isPending && session && (
-        <DropdownMenu>
+        <DropdownMenu modal={false}>
           <DropdownMenuTrigger asChild>
             <Avatar className="w-10 h-10 hover:cursor-pointer">
               <AvatarImage

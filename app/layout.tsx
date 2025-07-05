@@ -29,7 +29,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased h-screen`}
       >
-        <header className="bg-white z-50 fixed top-0 left-0 right-0 flex justify-between items-center py-3 px-10 border-b border-gray-200 h-16">
+        <header className="bg-white z-50 fixed top-0 left-0 right-0 flex justify-between items-center py-3 px-12 border-b border-gray-200 h-16">
           <Link href="/">
             <span className="text-2xl font-bold">FluxContext</span>
           </Link>
