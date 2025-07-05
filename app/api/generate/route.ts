@@ -1,6 +1,7 @@
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
+import { PrismaClient } from "@/lib/generated/prisma";
 
 const API_URL = "https://api.tu-zi.com/v1/images/generations";
 const API_TOKEN = process.env.FLUX_KONTENT_API_KEY;
@@ -16,6 +17,8 @@ export async function POST(req: NextRequest) {
     );
   }
 
+  const prisma = new PrismaClient();
+
   try {
     const session = await auth.api.getSession({
       headers: await headers(),
@@ -23,6 +26,21 @@ export async function POST(req: NextRequest) {
 
     if (!session) {
       return NextResponse.json({ error: "Unauthorized." }, { status: 401 });
+    }
+
+    // Check user credits
+    const userCredit = await prisma.userCredit.findUnique({
+      where: { userId: session.user.id },
+    });
+
+    if (!userCredit || userCredit.credits <= 0) {
+      return NextResponse.json(
+        {
+          error:
+            "Insufficient credits. Please purchase more credits to continue.",
+        },
+        { status: 402 }
+      );
     }
 
     const { prompt, aspectRatio } = await req.json();
@@ -94,10 +112,18 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    // Deduct 1 credit from user after successful generation
+    await prisma.userCredit.update({
+      where: { userId: session.user.id },
+      data: { credits: { decrement: 1 } },
+    });
+
     return NextResponse.json({ url: imageUrl });
   } catch (e) {
     const error = e as Error;
     console.error("Error in generate API route:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });
+  } finally {
+    await prisma.$disconnect();
   }
 }
