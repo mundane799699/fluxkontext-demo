@@ -200,7 +200,6 @@ export default function Home() {
       const { url: imageUrl } = await uploadResponse.json();
 
       // Step 2: Call generate API with the image URL in the prompt
-      const fullPrompt = `${imageUrl} ${prompt}`;
       let aspectRatioToUse = aspectRatio;
       if (!aspectRatioToUse && uploadedImage) {
         aspectRatioToUse = await findClosestAspectRatio(uploadedImage);
@@ -215,7 +214,8 @@ export default function Home() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          prompt: fullPrompt,
+          prompt,
+          url: imageUrl,
           aspectRatio: aspectRatioToUse,
         }),
       });

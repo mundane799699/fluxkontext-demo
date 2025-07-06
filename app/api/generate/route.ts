@@ -1,7 +1,8 @@
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
-import { PrismaClient } from "@/lib/generated/prisma";
+import { uploadImageFromUrlToR2 } from "@/lib/r2-client";
+import { prisma } from "@/lib/prismadb";
 
 const API_URL = "https://api.tu-zi.com/v1/images/generations";
 const API_TOKEN = process.env.FLUX_KONTENT_API_KEY;
@@ -16,8 +17,6 @@ export async function POST(req: NextRequest) {
       { status: 500 }
     );
   }
-
-  const prisma = new PrismaClient();
 
   try {
     const session = await auth.api.getSession({
@@ -43,7 +42,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const { prompt, aspectRatio } = await req.json();
+    const { prompt, aspectRatio, url } = await req.json();
 
     if (!prompt) {
       return NextResponse.json(
@@ -52,23 +51,21 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    const fullPrompt = `${url} ${prompt}`;
+
     const apiRequestBody: {
       model: string;
       prompt: string;
       aspect_ratio?: string;
     } = {
       model: "flux-kontext-pro",
-      prompt: prompt,
-      // aspect_ratio: aspectRatio,
+      prompt: fullPrompt,
+      aspect_ratio: aspectRatio,
       // Add other optional parameters from your python script if needed
       // output_format: "png",
       // safety_tolerance: 2,
       // prompt_upsampling: false,
     };
-
-    if (aspectRatio) {
-      apiRequestBody.aspect_ratio = aspectRatio;
-    }
 
     console.log("apiRequestBody", JSON.stringify(apiRequestBody));
 
@@ -112,18 +109,27 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    const r2Url = await uploadImageFromUrlToR2(imageUrl);
+
+    await prisma.assets.create({
+      data: {
+        userId: session.user.id,
+        url: r2Url,
+        prompt: prompt,
+      },
+    });
+
     // Deduct 1 credit from user after successful generation
     await prisma.userCredit.update({
       where: { userId: session.user.id },
       data: { credits: { decrement: 1 } },
     });
 
-    return NextResponse.json({ url: imageUrl });
+    // Respond with the newly generated image URL
+    return NextResponse.json({ url: r2Url });
   } catch (e) {
     const error = e as Error;
     console.error("Error in generate API route:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });
-  } finally {
-    await prisma.$disconnect();
   }
 }
