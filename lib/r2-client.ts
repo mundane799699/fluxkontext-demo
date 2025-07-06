@@ -26,15 +26,18 @@ export function isR2Configured() {
 export async function uploadToR2(
   fileBuffer: Buffer,
   fileName: string,
-  contentType: string
+  contentType: string,
+  directory?: string
 ) {
   if (!isR2Configured()) {
     throw new Error("R2 storage is not configured.");
   }
 
+  const key = directory ? `${directory}/${fileName}` : fileName;
+
   const putCommand = new PutObjectCommand({
     Bucket: R2_BUCKET_NAME,
-    Key: fileName,
+    Key: key,
     Body: fileBuffer,
     ContentType: contentType,
     ACL: "public-read",
@@ -42,10 +45,13 @@ export async function uploadToR2(
 
   await s3Client.send(putCommand);
 
-  return `${R2_PUBLIC_URL}/${fileName}`;
+  return `${R2_PUBLIC_URL}/${key}`;
 }
 
-export async function uploadImageFromUrlToR2(imageUrl: string) {
+export async function uploadImageFromUrlToR2(
+  imageUrl: string,
+  directory?: string
+) {
   const response = await fetch(imageUrl);
   if (!response.ok) {
     throw new Error(`Failed to fetch image: ${response.statusText}`);
@@ -55,5 +61,5 @@ export async function uploadImageFromUrlToR2(imageUrl: string) {
   const fileExtension = contentType.split("/")[1] || "png";
   const fileName = `${uuidv4()}.${fileExtension}`;
 
-  return await uploadToR2(fileBuffer, fileName, contentType);
+  return await uploadToR2(fileBuffer, fileName, contentType, directory);
 }

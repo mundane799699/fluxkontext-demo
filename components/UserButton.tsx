@@ -89,10 +89,13 @@ export function UserButton() {
             <DropdownMenuItem>{session.user?.name}</DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
-              <Link href="/userCenter/my-credits">User Center</Link>
+              <Link href="/my-credits">User Center</Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={handleSignOut}>
+            <DropdownMenuItem
+              onClick={handleSignOut}
+              className="cursor-pointer"
+            >
               Sign Out
             </DropdownMenuItem>
           </DropdownMenuContent>

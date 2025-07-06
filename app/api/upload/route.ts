@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
     const fileExtension = file.name.split(".").pop();
     const fileName = `${uuidv4()}.${fileExtension}`;
 
-    const publicUrl = await uploadToR2(fileBuffer, fileName, file.type);
+    const publicUrl = await uploadToR2(fileBuffer, fileName, file.type, "temp");
 
     return NextResponse.json({ url: publicUrl });
   } catch (error) {

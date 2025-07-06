@@ -11,24 +11,16 @@ async function getSession() {
 }
 
 // 缓存用户资产查询，缓存5分钟
-const getUserAssets = unstable_cache(
-  async (userId: string) => {
-    return await prisma.assets.findMany({
-      where: {
-        userId: userId,
-      },
-      orderBy: {
-        updatedAt: "desc",
-      },
-      take: 20, // 限制返回前20个结果，提高查询速度
-    });
-  },
-  ["user-assets"], // 缓存键
-  {
-    revalidate: 300, // 5分钟缓存
-    tags: ["user-assets"], // 缓存标签，方便后续清理
-  }
-);
+const getUserAssets = async (userId: string) => {
+  return await prisma.assets.findMany({
+    where: {
+      userId: userId,
+    },
+    orderBy: {
+      updatedAt: "desc",
+    },
+  });
+};
 
 const AssetsPage = async () => {
   const session = await getSession();

@@ -7,6 +7,8 @@ import LoginModal from "@/components/LoginModal";
 import { findClosestAspectRatio } from "@/lib/image-utils";
 import { authClient } from "@/lib/auth-client";
 import { useAuthStore } from "@/store/use-auth";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 type Prompt = {
   title: string;
@@ -69,6 +71,7 @@ const promptConfigs: Prompt[] = [
 ];
 
 export default function Home() {
+  const router = useRouter();
   const { user } = useAuthStore();
   const [uploadedImage, setUploadedImage] = useState<string | null>(null);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
@@ -369,7 +372,7 @@ export default function Home() {
           <div>
             <h3 className="font-semibold mb-2">Prompt (Click to edit)</h3>
             <textarea
-              placeholder="Enter your prompt in English"
+              placeholder="Enter your prompt"
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
               className="w-full h-32 p-3 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
@@ -425,9 +428,12 @@ export default function Home() {
                 <DownloadIcon />
                 {isDownloading ? "Downloading..." : "download result"}
               </button>
-              <button className="w-full bg-gray-200 py-3 rounded-lg font-semibold text-gray-700 hover:bg-gray-300 transition-colors">
+              <Link
+                href="/my-genassets"
+                className="w-full text-center bg-gray-200 py-3 rounded-lg font-semibold text-gray-700 hover:bg-gray-300 transition-colors"
+              >
                 My Assets
-              </button>
+              </Link>
             </div>
           </div>
         </div>

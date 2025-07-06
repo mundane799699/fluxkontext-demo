@@ -5,9 +5,9 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 
 const sidebarItems = [
-  { name: "My Genassets", href: "/userCenter/my-genassets" },
-  { name: "My Orders", href: "/userCenter/my-orders" },
-  { name: "My Credits", href: "/userCenter/my-credits" },
+  { name: "My Genassets", href: "/my-genassets" },
+  { name: "My Orders", href: "/my-orders" },
+  { name: "My Credits", href: "/my-credits" },
 ];
 
 const Sidebar = () => {

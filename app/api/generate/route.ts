@@ -109,7 +109,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const r2Url = await uploadImageFromUrlToR2(imageUrl);
+    const r2Url = await uploadImageFromUrlToR2(imageUrl, "assets");
 
     await prisma.assets.create({
       data: {
