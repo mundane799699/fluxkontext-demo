@@ -342,7 +342,7 @@ export default function Home() {
 
           <div>
             <h3 className="font-semibold mb-2">Set output aspect ratio</h3>
-            <div className="flex gap-2">
+            <div className="flex gap-2 overflow-x-auto pb-2">
               {aspectRatios.map((aspectRatio) => (
                 <AspectRatioButton
                   key={aspectRatio.title}
