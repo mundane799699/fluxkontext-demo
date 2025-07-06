@@ -25,7 +25,7 @@ const AssetCard = ({ asset }: AssetCardProps) => {
       document.body.removeChild(link);
       window.URL.revokeObjectURL(url);
     } catch (error) {
-      console.error("下载失败:", error);
+      console.error("download failed:", error);
     }
   };
 
@@ -35,7 +35,7 @@ const AssetCard = ({ asset }: AssetCardProps) => {
         await navigator.clipboard.writeText(asset.prompt);
         toast.success("Prompt copied to clipboard");
       } catch (error) {
-        console.error("复制失败:", error);
+        console.error("copy failed:", error);
         toast.error("Failed to copy prompt");
       }
     }
