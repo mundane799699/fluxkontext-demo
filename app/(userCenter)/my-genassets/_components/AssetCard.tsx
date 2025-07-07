@@ -53,7 +53,7 @@ const AssetCard = ({ asset }: AssetCardProps) => {
         />
         <button
           onClick={handleDownload}
-          className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-lg cursor-pointer absolute bottom-2 right-2 bg-background/80 hover:bg-background p-2 rounded-full"
+          className="opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity duration-300 text-lg cursor-pointer absolute bottom-2 right-2 bg-background/80 hover:bg-background p-2 rounded-full"
           title="Download Asset"
         >
           <DownloadIcon />
