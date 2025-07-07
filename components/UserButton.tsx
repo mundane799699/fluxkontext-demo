@@ -89,7 +89,7 @@ export function UserButton() {
             <DropdownMenuItem>{session.user?.name}</DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
-              <Link href="/my-credits">User Center</Link>
+              <Link href="/my-genassets">User Center</Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem
