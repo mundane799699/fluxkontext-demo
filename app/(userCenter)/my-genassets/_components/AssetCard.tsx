@@ -3,8 +3,7 @@
 import { Assets } from "@/lib/generated/prisma";
 import Image from "next/image";
 import { useState } from "react";
-import DownloadIcon from "@/components/DownloadIcon";
-import { CopyIcon } from "lucide-react";
+import { CopyIcon, DownloadIcon } from "lucide-react";
 import { toast } from "sonner";
 
 interface AssetCardProps {
@@ -51,13 +50,6 @@ const AssetCard = ({ asset }: AssetCardProps) => {
           className="object-cover group-hover:scale-105 transition-all duration-200"
           sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
         />
-        <button
-          onClick={handleDownload}
-          className="opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity duration-300 text-lg cursor-pointer absolute bottom-2 right-2 bg-background/80 hover:bg-background p-2 rounded-full"
-          title="Download Asset"
-        >
-          <DownloadIcon />
-        </button>
       </div>
       <div className="p-3">
         {asset.prompt && (
@@ -79,15 +71,24 @@ const AssetCard = ({ asset }: AssetCardProps) => {
           <p className="text-xs text-gray-400">
             {new Date(asset.updatedAt).toLocaleDateString()}
           </p>
-          {asset.prompt && (
+          <div className="flex items-center gap-2">
+            {asset.prompt && (
+              <button
+                onClick={handleCopyPrompt}
+                className="cursor-pointer text-gray-400 hover:text-gray-600 transition-colors p-1 rounded"
+                title="Copy Prompt"
+              >
+                <CopyIcon className="w-4 h-4" />
+              </button>
+            )}
             <button
-              onClick={handleCopyPrompt}
-              className="cursor-pointer text-gray-400 hover:text-gray-600 transition-colors p-1 rounded"
-              title="Copy Prompt"
+              onClick={handleDownload}
+              className="cursor-pointer text-gray-400 hover:text-gray-600 transition-colors p-1 rounded-full"
+              title="Download Asset"
             >
-              <CopyIcon className="w-4 h-4" />
+              <DownloadIcon className="w-4 h-4" />
             </button>
-          )}
+          </div>
         </div>
       </div>
     </div>
