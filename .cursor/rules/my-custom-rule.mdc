@@ -1,0 +1,54 @@
+---
+description: English Language Requirements for Logs and Messages
+globs: ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"]
+alwaysApply: true
+---
+
+# English Language Requirements
+
+## Core Requirement
+All logs, error messages, user prompts, console outputs, and text content in the codebase MUST be written in English, not Chinese.
+
+## Specific Guidelines
+
+### 1. Logging and Console Output
+- All `console.log()`, `console.error()`, `console.warn()`, `console.info()` messages must be in English
+- Error messages and exception texts must be in English
+- Debug messages and development logs must be in English
+
+### 2. User Interface Text
+- All user-facing text, labels, buttons, and messages must be in English
+- Error notifications and success messages must be in English
+- Form validation messages must be in English
+
+### 3. API Responses
+- All API error messages and response texts must be in English
+- Status messages and API documentation must be in English
+
+### 4. Comments and Documentation
+- While code comments can be flexible, prefer English for consistency
+- Error descriptions in try-catch blocks must be in English
+
+### 5. Toast Messages and Notifications
+- All toast notifications, alerts, and user feedback must be in English
+
+## Examples
+
+✅ **Correct (English):**
+```javascript
+console.log("User authentication successful");
+throw new Error("Failed to fetch user data");
+toast.error("Unable to save changes");
+```
+
+❌ **Incorrect (Chinese):**
+```javascript
+console.log("用户认证成功");
+throw new Error("获取用户数据失败");
+toast.error("无法保存更改");
+```
+
+## Implementation Notes
+- Use English even for internal logging and debugging
+- Maintain consistency across all components and modules
+- Consider using internationalization (i18n) if multi-language support is needed in the future
