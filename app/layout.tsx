@@ -40,7 +40,7 @@ export default function RootLayout({
           </Link>
           <UserButton />
         </header>
-        <main className="pt-16 h-full">{children}</main>
+        <main className="pt-16 h-screen">{children}</main>
         <Toaster />
       </body>
     </html>

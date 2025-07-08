@@ -17,7 +17,7 @@ const UserCenterLayout = async ({
   }
 
   return (
-    <div className="bg-gray-50 font-sans h-[calc(100vh-4rem)] flex-col md:flex-row">
+    <div className="bg-gray-50 font-sans h-full flex-col md:flex-row">
       <div className="flex flex-col md:flex-row h-full">
         {/* 侧边栏 */}
         <Sidebar />
