@@ -14,7 +14,7 @@ const Sidebar = () => {
   const pathname = usePathname();
 
   return (
-    <div className="w-full md:w-64 border-b md:border-r bg-white p-4 md:p-6">
+    <div className="w-full md:w-64 border-b bg-white p-4 md:p-6">
       {/* 桌面端垂直导航 */}
       <nav className="space-y-2 flex md:flex-col">
         {sidebarItems.map((item) => (

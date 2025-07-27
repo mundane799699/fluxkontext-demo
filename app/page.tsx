@@ -4,6 +4,7 @@ import { useState, ChangeEvent, useRef, useEffect } from "react";
 import CloseIcon from "@/components/CloseIcon";
 import DownloadIcon from "@/components/DownloadIcon";
 import LoginModal from "@/components/LoginModal";
+import PurchaseCreditsModal from "@/components/PurchaseCreditsModal";
 import { findClosestAspectRatio } from "@/lib/image-utils";
 import { authClient } from "@/lib/auth-client";
 import { useAuthStore } from "@/store/use-auth";
@@ -90,6 +91,8 @@ export default function Home() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isDownloading, setIsDownloading] = useState<boolean>(false);
   const [showLoginModal, setShowLoginModal] = useState<boolean>(false);
+  const [showPurchaseCreditsModal, setShowPurchaseCreditsModal] =
+    useState<boolean>(false);
 
   useEffect(() => {
     const restorePendingData = async () => {
@@ -225,6 +228,12 @@ export default function Home() {
 
       if (generateResponse.status === 401) {
         setShowLoginModal(true);
+        setIsLoading(false);
+        return;
+      }
+
+      if (generateResponse.status === 402) {
+        setShowPurchaseCreditsModal(true);
         setIsLoading(false);
         return;
       }
@@ -384,7 +393,7 @@ export default function Home() {
             disabled={isLoading || !uploadedImage}
             className="w-full bg-blue-600 text-white font-bold py-3 rounded-lg hover:bg-blue-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
           >
-            {isLoading ? "Generating..." : "Create Image"}
+            {isLoading ? "Generating..." : "Create Image (1 credit)"}
           </button>
         </div>
 
@@ -443,6 +452,11 @@ export default function Home() {
         isOpen={showLoginModal}
         onClose={() => setShowLoginModal(false)}
         onBeforeLogin={handleBeforeLogin}
+      />
+
+      <PurchaseCreditsModal
+        isOpen={showPurchaseCreditsModal}
+        onClose={() => setShowPurchaseCreditsModal(false)}
       />
     </div>
   );
