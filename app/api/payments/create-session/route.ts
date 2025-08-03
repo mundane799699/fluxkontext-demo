@@ -34,7 +34,6 @@ export async function POST(req: NextRequest) {
     const payment = await prisma.payment.create({
       data: {
         userId: session.user.id,
-        stripePaymentId: "", // Will be updated after successful payment
         amount: price,
         currency: "usd",
         credits: credits,
@@ -54,7 +53,7 @@ export async function POST(req: NextRequest) {
               name: `${credits} AI Image Generation Credits`,
               description: `Purchase ${credits} credits for AI image generation`,
             },
-            unit_amount: 1, // Convert to cents
+            unit_amount: 50, // Convert to cents
           },
           quantity: 1,
         },

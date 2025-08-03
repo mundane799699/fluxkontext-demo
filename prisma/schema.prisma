@@ -105,8 +105,8 @@ model Payment {
   id              String   @id @default(cuid())
   userId          String
   user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  stripePaymentId String   @unique
-  stripeSessionId String?  @unique
+  stripePaymentId String?
+  stripeSessionId String?
   amount          Float
   currency        String   @default("usd")
   credits         Int
