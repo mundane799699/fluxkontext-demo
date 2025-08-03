@@ -16,7 +16,7 @@ datasource db {
 }
 
 model User {
-  id            String    @id
+  id            String      @id
   name          String
   email         String
   emailVerified Boolean
@@ -27,6 +27,8 @@ model User {
   accounts      Account[]
   credit        UserCredit?
   assets        Assets[]
+  payments      Payment[]
+
   @@unique([email])
   @@map("user")
 }
@@ -97,4 +99,20 @@ model Assets {
   updatedAt DateTime @updatedAt
 
   @@map("assets")
+}
+
+model Payment {
+  id              String   @id @default(cuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  stripePaymentId String   @unique
+  stripeSessionId String?  @unique
+  amount          Float
+  currency        String   @default("usd")
+  credits         Int
+  status          String // pending, completed, failed, cancelled
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@map("payment")
 }

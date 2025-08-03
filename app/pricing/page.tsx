@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { getStripe } from "@/lib/stripe";
 
 const creditPackages = [
   {
@@ -45,18 +46,42 @@ const creditPackages = [
 
 export default function PricingPage() {
   const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
 
   const handlePurchase = async (credits: number, price: number) => {
     setIsLoading(true);
     try {
-      // TODO: Implement payment logic here
-      console.log(`Purchasing ${credits} credits for $${price}`);
+      // Create payment session
+      const response = await fetch("/api/payments/create-session", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ credits, price }),
+      });
 
-      // For now, just redirect to credits page
-      router.push("/my-credits");
+      if (!response.ok) {
+        throw new Error("Failed to create payment session");
+      }
+
+      const { sessionId } = await response.json();
+
+      // Redirect to Stripe Checkout
+      const stripe = await getStripe();
+      if (!stripe) {
+        throw new Error("Stripe failed to load");
+      }
+
+      const { error } = await stripe.redirectToCheckout({
+        sessionId,
+      });
+
+      if (error) {
+        console.error("Stripe redirect error:", error);
+        throw error;
+      }
     } catch (error) {
       console.error("Purchase failed:", error);
+      alert("Payment failed. Please try again.");
     } finally {
       setIsLoading(false);
     }

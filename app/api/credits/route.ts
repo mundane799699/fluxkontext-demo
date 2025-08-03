@@ -10,10 +10,13 @@ export async function GET(req: NextRequest) {
     });
 
     if (!session) {
-      return NextResponse.json({ error: "未授权访问" }, { status: 401 });
+      return NextResponse.json(
+        { error: "Unauthorized access" },
+        { status: 401 }
+      );
     }
 
-    // 查询用户的credit信息
+    // Query user credit information
     const userCredit = await prisma.userCredit.findUnique({
       where: {
         userId: session.user.id,
@@ -22,7 +25,7 @@ export async function GET(req: NextRequest) {
 
     if (!userCredit) {
       return NextResponse.json(
-        { error: "未找到用户credit信息" },
+        { error: "User credit information not found" },
         { status: 404 }
       );
     }
@@ -31,7 +34,10 @@ export async function GET(req: NextRequest) {
       credits: userCredit.credits,
     });
   } catch (error) {
-    console.error("获取用户credit出错:", error);
-    return NextResponse.json({ error: "服务器内部错误" }, { status: 500 });
+    console.error("Error fetching user credits:", error);
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
   }
 }
