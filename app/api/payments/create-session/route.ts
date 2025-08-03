@@ -54,7 +54,7 @@ export async function POST(req: NextRequest) {
               name: `${credits} AI Image Generation Credits`,
               description: `Purchase ${credits} credits for AI image generation`,
             },
-            unit_amount: Math.round(price * 100), // Convert to cents
+            unit_amount: 1, // Convert to cents
           },
           quantity: 1,
         },
