@@ -1,36 +1,11 @@
-import { auth } from "@/lib/auth";
-import { prisma } from "@/lib/prismadb";
-import { headers } from "next/headers";
-import Image from "next/image";
-import { unstable_cache } from "next/cache";
+"use client";
+
+import { useState } from "react";
 import AssetCard from "./AssetCard";
+import { Assets } from "@/lib/generated/prisma";
 
-async function getSession() {
-  return auth.api.getSession({
-    headers: await headers(),
-  });
-}
-
-// 缓存用户资产查询，缓存5分钟
-const getUserAssets = async (userId: string) => {
-  return await prisma.assets.findMany({
-    where: {
-      userId: userId,
-    },
-    orderBy: {
-      updatedAt: "desc",
-    },
-  });
-};
-
-const AssetsPage = async () => {
-  const session = await getSession();
-
-  if (!session) {
-    return null;
-  }
-
-  const assets = await getUserAssets(session.user.id);
+const AssetsPage = ({ assets: initialAssets }: { assets: Assets[] }) => {
+  const [assets, setAssets] = useState<Assets[]>(initialAssets);
   return (
     <div>
       {assets.length === 0 ? (
@@ -42,7 +17,15 @@ const AssetsPage = async () => {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {assets.map((asset) => (
-            <AssetCard key={asset.id} asset={asset} />
+            <AssetCard
+              key={asset.id}
+              asset={asset}
+              onDelete={() => {
+                setAssets((prevAssets) =>
+                  prevAssets.filter((a) => a.id !== asset.id)
+                );
+              }}
+            />
           ))}
         </div>
       )}

@@ -11,7 +11,8 @@ async function getSession() {
   });
 }
 
-async function getUserAssets(userId: string) {
+// 缓存用户资产查询，缓存5分钟
+const getUserAssets = async (userId: string) => {
   return await prisma.assets.findMany({
     where: {
       userId: userId,
@@ -20,9 +21,16 @@ async function getUserAssets(userId: string) {
       updatedAt: "desc",
     },
   });
-}
+};
 
 const MyGenassetsPage = async () => {
+  const session = await getSession();
+
+  if (!session) {
+    return null;
+  }
+
+  const assets = await getUserAssets(session.user.id);
   return (
     <div className="p-6">
       <h1 className="text-2xl font-bold text-gray-900 mb-2">
@@ -32,7 +40,7 @@ const MyGenassetsPage = async () => {
         View and manage your generated assets.
       </p>
 
-      <AssetsPage />
+      <AssetsPage assets={assets} />
     </div>
   );
 };

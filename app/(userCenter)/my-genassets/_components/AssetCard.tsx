@@ -3,14 +3,27 @@
 import { Assets } from "@/lib/generated/prisma";
 import Image from "next/image";
 import { useState } from "react";
-import { CopyIcon, DownloadIcon } from "lucide-react";
+import { CopyIcon, DownloadIcon, Trash2 } from "lucide-react";
 import { toast } from "sonner";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 
 interface AssetCardProps {
   asset: Assets;
+  onDelete: () => void;
 }
 
-const AssetCard = ({ asset }: AssetCardProps) => {
+const AssetCard = ({ asset, onDelete }: AssetCardProps) => {
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+
   const handleDownload = async () => {
     try {
       const response = await fetch(asset.url);
@@ -18,7 +31,8 @@ const AssetCard = ({ asset }: AssetCardProps) => {
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
-      link.download = `asset-${asset.id}.jpg`; // 你可以根据需要调整文件名和扩展名
+      // todo 你可以根据需要调整文件名和扩展名
+      link.download = `asset-${asset.id}.jpg`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -37,6 +51,28 @@ const AssetCard = ({ asset }: AssetCardProps) => {
         console.error("copy failed:", error);
         toast.error("Failed to copy prompt");
       }
+    }
+  };
+
+  const handleDelete = async () => {
+    setIsDeleting(true);
+    try {
+      const response = await fetch(`/api/assets/${asset.id}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to delete asset");
+      }
+
+      toast.success("Asset deleted successfully");
+      setShowDeleteDialog(false);
+      onDelete();
+    } catch (error) {
+      console.error("delete failed:", error);
+      toast.error("Failed to delete asset");
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -69,7 +105,11 @@ const AssetCard = ({ asset }: AssetCardProps) => {
         )}
         <div className="flex justify-between items-center">
           <p className="text-xs text-gray-400">
-            {new Date(asset.updatedAt).toLocaleDateString()}
+            {new Date(asset.updatedAt).toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "numeric",
+              day: "numeric",
+            })}
           </p>
           <div className="flex items-center gap-2">
             {asset.prompt && (
@@ -88,9 +128,45 @@ const AssetCard = ({ asset }: AssetCardProps) => {
             >
               <DownloadIcon className="w-4 h-4" />
             </button>
+            <button
+              onClick={() => setShowDeleteDialog(true)}
+              className="cursor-pointer text-gray-400 hover:text-red-500 transition-colors p-1 rounded"
+              title="Delete Asset"
+            >
+              <Trash2 className="w-4 h-4" />
+            </button>
           </div>
         </div>
       </div>
+
+      {/* Delete Confirmation Dialog */}
+      <Dialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Delete Asset</DialogTitle>
+            <DialogDescription>
+              Are you sure you want to delete this asset? This action cannot be
+              undone.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="gap-2">
+            <Button
+              variant="outline"
+              onClick={() => setShowDeleteDialog(false)}
+              disabled={isDeleting}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={handleDelete}
+              disabled={isDeleting}
+            >
+              {isDeleting ? "Deleting..." : "Delete"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

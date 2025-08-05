@@ -1,4 +1,8 @@
-import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
+import {
+  PutObjectCommand,
+  S3Client,
+  DeleteObjectCommand,
+} from "@aws-sdk/client-s3";
 import { v4 as uuidv4 } from "uuid";
 
 const s3Client = new S3Client({
@@ -62,4 +66,46 @@ export async function uploadImageFromUrlToR2(
   const fileName = `${uuidv4()}.${fileExtension}`;
 
   return await uploadToR2(fileBuffer, fileName, contentType, directory);
+}
+
+/**
+ * Extract the R2 key from a public URL
+ * @param url - The public R2 URL
+ * @returns The R2 key (file path)
+ */
+export function extractR2KeyFromUrl(url: string): string {
+  if (!R2_PUBLIC_URL) {
+    throw new Error("R2_PUBLIC_URL is not configured");
+  }
+
+  // Remove the public URL base and leading slash
+  const key = url.replace(R2_PUBLIC_URL, "").replace(/^\//, "");
+  return key;
+}
+
+/**
+ * Delete a file from R2 storage
+ * @param key - The R2 key (file path) to delete
+ */
+export async function deleteFromR2(key: string) {
+  if (!isR2Configured()) {
+    throw new Error("R2 storage is not configured.");
+  }
+
+  const deleteCommand = new DeleteObjectCommand({
+    Bucket: R2_BUCKET_NAME,
+    Key: key,
+  });
+
+  await s3Client.send(deleteCommand);
+}
+
+/**
+ * Delete a file from R2 storage using its public URL
+ * @param url - The public R2 URL to delete
+ */
+export async function deleteFromR2ByUrl(url: string) {
+  const key = extractR2KeyFromUrl(url);
+  console.log("Deleting file from R2:", key);
+  await deleteFromR2(key);
 }
