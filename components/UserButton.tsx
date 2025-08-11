@@ -126,7 +126,7 @@ export function UserButton() {
                   src={session.user?.image || ""}
                   alt={session.user?.name || "avatar"}
                 />
-                <AvatarFallback className="bg-blue-500 text-white font-semibold">
+                <AvatarFallback className="bg-gray-500 text-white font-semibold">
                   {session.user?.name?.charAt(0).toUpperCase() || "U"}
                 </AvatarFallback>
               </Avatar>
