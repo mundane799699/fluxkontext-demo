@@ -12,19 +12,54 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useAuthStore } from "@/store/use-auth";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { Coins } from "lucide-react";
 
 export function UserButton() {
   const { data: session, isPending, error, refetch } = authClient.useSession();
   const setUser = useAuthStore((state) => state.setUser);
   const setIsPending = useAuthStore((state) => state.setIsPending);
 
+  // Credits state management
+  const [credits, setCredits] = useState<number | null>(null);
+  const [creditsLoading, setCreditsLoading] = useState(false);
+  const [creditsError, setCreditsError] = useState<string | null>(null);
+
+  // Function to fetch user credits
+  const fetchCredits = async () => {
+    if (!session?.user) return;
+
+    setCreditsLoading(true);
+    setCreditsError(null);
+
+    try {
+      const response = await fetch("/api/credits");
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch credits");
+      }
+
+      const data = await response.json();
+      setCredits(data.credits);
+    } catch (error) {
+      console.error("Error fetching credits:", error);
+      setCreditsError("Failed to load credits");
+    } finally {
+      setCreditsLoading(false);
+    }
+  };
+
   useEffect(() => {
     setIsPending(isPending);
     if (session?.user) {
       setUser(session.user as any);
+      // Fetch credits when user is authenticated
+      fetchCredits();
     } else {
       setUser(null);
+      // Reset credits when user is not authenticated
+      setCredits(null);
+      setCreditsError(null);
     }
   }, [session, isPending, setUser, setIsPending]);
 
@@ -73,33 +108,45 @@ export function UserButton() {
         </button>
       )}
       {!isPending && session && (
-        <DropdownMenu modal={false}>
-          <DropdownMenuTrigger asChild>
-            <Avatar className="w-10 h-10 hover:cursor-pointer">
-              <AvatarImage
-                src={session.user?.image || ""}
-                alt={session.user?.name || "avatar"}
-              />
-              <AvatarFallback className="bg-blue-500 text-white font-semibold">
-                {session.user?.name?.charAt(0).toUpperCase() || "U"}
-              </AvatarFallback>
-            </Avatar>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="center">
-            <DropdownMenuItem>{session.user?.name}</DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <Link href="/my-genassets">User Center</Link>
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem
-              onClick={handleSignOut}
-              className="cursor-pointer"
-            >
-              Sign Out
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <div className="flex items-center gap-3">
+          {/* Credits display */}
+          {!creditsLoading && (
+            <div className="flex items-center gap-1 text-sm text-gray-600 rounded-md bg-gray-100 p-1">
+              <Coins className="w-4 h-4" />
+              <span className="font-semibold">
+                {credits !== null ? credits : 0}
+              </span>
+            </div>
+          )}
+
+          <DropdownMenu modal={false}>
+            <DropdownMenuTrigger asChild>
+              <Avatar className="w-10 h-10 hover:cursor-pointer">
+                <AvatarImage
+                  src={session.user?.image || ""}
+                  alt={session.user?.name || "avatar"}
+                />
+                <AvatarFallback className="bg-blue-500 text-white font-semibold">
+                  {session.user?.name?.charAt(0).toUpperCase() || "U"}
+                </AvatarFallback>
+              </Avatar>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="center">
+              <DropdownMenuItem>{session.user?.name}</DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>
+                <Link href="/my-genassets">User Center</Link>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                onClick={handleSignOut}
+                className="cursor-pointer"
+              >
+                Sign Out
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       )}
     </div>
   );
