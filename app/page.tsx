@@ -160,7 +160,7 @@ export default function Home() {
 
             {/* Prompts Section */}
             <div className="text-center">
-              <h3 className="text-white text-sm font-medium tracking-wider mb-6 opacity-70">
+              <h3 className="text-sm font-medium tracking-wider mb-6">
                 PROMPTS
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-left">
