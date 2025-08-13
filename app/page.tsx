@@ -101,6 +101,111 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Style Showcase Section */}
+      <section className="py-16 bg-gradient-to-br">
+        <div className="container mx-auto px-4 border border-gray-400 rounded-3xl p-8 lg:p-12 max-w-6xl">
+          <div className="max-w-4xl mx-auto">
+            {/* Original Image Section */}
+            <div className="text-center mb-8">
+              <h3 className="text-white text-sm font-medium tracking-wider mb-4 opacity-70">
+                ORIGINAL
+              </h3>
+              <div className="flex justify-center">
+                <div className="relative w-[calc(50%-0.5rem)] max-w-md h-64 rounded-lg overflow-hidden border-2 border-gray-400">
+                  <Image
+                    src="/images/flux-kontext-image-7.jpg"
+                    alt="Original Image"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Style Grid */}
+            <div className="grid grid-cols-2 gap-4 mb-8">
+              <div className="relative h-64 rounded-lg overflow-hidden border border-gray-400">
+                <Image
+                  src="/images/flux-kontext-image-8.jpg"
+                  alt="Watercolor Style"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+              <div className="relative h-64 rounded-lg overflow-hidden border border-gray-400">
+                <Image
+                  src="/images/flux-kontext-image-9.jpg"
+                  alt="Ghibli Style"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+              <div className="relative h-64 rounded-lg overflow-hidden border border-gray-400">
+                <Image
+                  src="/images/flux-kontext-image-10.jpg"
+                  alt="3D Clay Style"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+              <div className="relative h-64 rounded-lg overflow-hidden border border-gray-400">
+                <Image
+                  src="/images/flux-kontext-image-11.jpg"
+                  alt="Pixel Art Style"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+            </div>
+
+            {/* Prompts Section */}
+            <div className="text-center">
+              <h3 className="text-white text-sm font-medium tracking-wider mb-6 opacity-70">
+                PROMPTS
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-left">
+                <div className="bg-black/30 rounded-lg p-4 border border-white/10">
+                  <div className="text-white font-semibold text-sm mb-2">
+                    1. Watercolor
+                  </div>
+                  <p className="text-white/80 text-sm leading-relaxed">
+                    Transform the style into a watercolor style, cute, keeping
+                    the characters and background unchanged.
+                  </p>
+                </div>
+                <div className="bg-black/30 rounded-lg p-4 border border-white/10">
+                  <div className="text-white font-semibold text-sm mb-2">
+                    2. Ghibli
+                  </div>
+                  <p className="text-white/80 text-sm leading-relaxed">
+                    Change the style to Japanese Ghibli style, keeping the
+                    characters and environment unchanged.
+                  </p>
+                </div>
+                <div className="bg-black/30 rounded-lg p-4 border border-white/10">
+                  <div className="text-white font-semibold text-sm mb-2">
+                    3. 3D Clay
+                  </div>
+                  <p className="text-white/80 text-sm leading-relaxed">
+                    Change the style to cartoon 3D clay texture style, keeping
+                    the characters and environment unchanged.
+                  </p>
+                </div>
+                <div className="bg-black/30 rounded-lg p-4 border border-white/10">
+                  <div className="text-white font-semibold text-sm mb-2">
+                    4. Pixel Art
+                  </div>
+                  <p className="text-white/80 text-sm leading-relaxed">
+                    Convert the style to a 16-bit mosaic pixel style, keeping
+                    the main character and background unchanged.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <LoginModal
         isOpen={showLoginModal}
         onClose={() => setShowLoginModal(false)}
