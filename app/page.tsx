@@ -5,6 +5,7 @@ import Image from "next/image";
 import LoginModal from "@/components/LoginModal";
 import PurchaseCreditsModal from "@/components/PurchaseCreditsModal";
 import ImageGenerator from "@/components/ImageGenerator";
+import BeforeAfterComparison from "@/components/BeforeAfterComparison";
 import { authClient } from "@/lib/auth-client";
 import { useAuthStore } from "@/store/use-auth";
 import { useRouter } from "next/navigation";
@@ -77,59 +78,25 @@ export default function Home() {
             </p>
           </div>
           <div className="mx-auto mt-8 lg:mt-12">
-            {/* Before/After Image Comparison */}
-            <div className="relative bg-gradient-to-br border border-gray-400 rounded-3xl p-8 lg:p-12 max-w-6xl mx-auto">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
-                {/* Before Image */}
-                <div className="space-y-4">
-                  <div className="text-center">
-                    <span className="inline-block  text-sm font-medium px-4 py-2 rounded-full">
-                      BEFORE
-                    </span>
-                  </div>
-                  <div className="relative">
-                    <Image
-                      src="/images/flux-kontext-image-1.jpg"
-                      alt="Before image enhancement"
-                      className="w-full h-[300px] object-cover rounded-2xl shadow-2xl"
-                      width={500}
-                      height={400}
-                    />
-                  </div>
-                </div>
+            <BeforeAfterComparison
+              beforeImage="/images/flux-kontext-image-1.jpg"
+              afterImage="/images/flux-kontext-image-2.jpg"
+              prompt="Character remain unchanged, the cars in the background remain unchanged, change the car's color to red."
+              className="mb-8"
+            />
 
-                {/* After Image */}
-                <div className="space-y-4">
-                  <div className="text-center">
-                    <span className="inline-block text-sm font-medium px-4 py-2 rounded-full">
-                      AFTER
-                    </span>
-                  </div>
-                  <div className="relative">
-                    <Image
-                      src="/images/flux-kontext-image-2.jpg"
-                      alt="After image enhancement"
-                      className="w-full h-[300px] object-cover rounded-2xl shadow-2xl"
-                      width={500}
-                      height={400}
-                    />
-                  </div>
-                </div>
-              </div>
+            <BeforeAfterComparison
+              beforeImage="/images/flux-kontext-image-3.jpg"
+              afterImage="/images/flux-kontext-image-4.jpg"
+              prompt="Maintain all other characters and scenes unchanged, remove the man in the center, and replace him with a bonsai"
+              className="mb-8"
+            />
 
-              {/* Prompt Section */}
-              <div className="mt-8 lg:mt-12 text-center">
-                <h3 className="text-sm font-semibold mb-3 tracking-wider">
-                  PROMPT
-                </h3>
-                <div className="backdrop-blur-sm rounded-2xl p-6 lg:p-8">
-                  <p className="lg:text-lg leading-relaxed text-muted-foreground text-sm">
-                    Character remain unchanged, the cars in the background
-                    remain unchanged, change the car's color to red.
-                  </p>
-                </div>
-              </div>
-            </div>
+            <BeforeAfterComparison
+              beforeImage="/images/flux-kontext-image-5.jpg"
+              afterImage="/images/flux-kontext-image-6.jpg"
+              prompt="Remove all passerby from the background, change the background to a volcanic crater"
+            />
           </div>
         </div>
       </section>
