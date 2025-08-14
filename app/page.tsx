@@ -111,7 +111,7 @@ export default function Home() {
                 ORIGINAL
               </h3>
               <div className="flex justify-center">
-                <div className="relative w-[calc(50%-0.5rem)] max-w-md h-64 rounded-lg overflow-hidden border-2 border-gray-400">
+                <div className="relative h-80 aspect-[1080/650] rounded-lg overflow-hidden border-2 border-gray-400">
                   <Image
                     src="/images/flux-kontext-image-7.jpg"
                     alt="Original Image"
@@ -124,7 +124,7 @@ export default function Home() {
 
             {/* Style Grid */}
             <div className="grid grid-cols-2 gap-4 mb-8">
-              <div className="relative h-64 rounded-lg overflow-hidden border border-gray-400">
+              <div className="relative h-80 aspect-[1080/650] rounded-lg overflow-hidden border border-gray-400">
                 <Image
                   src="/images/flux-kontext-image-8.jpg"
                   alt="Watercolor Style"
@@ -132,7 +132,7 @@ export default function Home() {
                   className="object-cover"
                 />
               </div>
-              <div className="relative h-64 rounded-lg overflow-hidden border border-gray-400">
+              <div className="relative h-80 aspect-[1080/650] rounded-lg overflow-hidden border border-gray-400">
                 <Image
                   src="/images/flux-kontext-image-9.jpg"
                   alt="Ghibli Style"
@@ -140,7 +140,7 @@ export default function Home() {
                   className="object-cover"
                 />
               </div>
-              <div className="relative h-64 rounded-lg overflow-hidden border border-gray-400">
+              <div className="relative h-80 aspect-[1080/650] rounded-lg overflow-hidden border border-gray-400">
                 <Image
                   src="/images/flux-kontext-image-10.jpg"
                   alt="3D Clay Style"
@@ -148,7 +148,7 @@ export default function Home() {
                   className="object-cover"
                 />
               </div>
-              <div className="relative h-64 rounded-lg overflow-hidden border border-gray-400">
+              <div className="relative h-80 aspect-[1080/650] rounded-lg overflow-hidden border border-gray-400">
                 <Image
                   src="/images/flux-kontext-image-11.jpg"
                   alt="Pixel Art Style"
@@ -160,8 +160,8 @@ export default function Home() {
 
             {/* Prompts Section */}
             <div className="text-center">
-              <h3 className="text-sm font-medium tracking-wider mb-6">
-                PROMPTS
+              <h3 className="text-sm font-medium tracking-wider mb-6 uppercase">
+                Style Generation Prompts
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-left">
                 <div className="bg-black/30 rounded-lg p-4 border border-white/10">
@@ -198,6 +198,123 @@ export default function Home() {
                   <p className="text-white/80 text-sm leading-relaxed">
                     Convert the style to a 16-bit mosaic pixel style, keeping
                     the main character and background unchanged.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Style Showcase Section */}
+      <section className="py-16 bg-gradient-to-br">
+        <div className="container mx-auto px-4 border border-gray-400 rounded-3xl p-4 lg:p-8 max-w-6xl">
+          <div className="mx-auto">
+            {/* Original Image Section */}
+            <div className="text-center mb-8">
+              <h3 className="text-sm font-medium tracking-wider mb-4">
+                ORIGINAL
+              </h3>
+              <div className="flex justify-center">
+                <div className="relative h-80 aspect-[1080/650] rounded-lg overflow-hidden border-2 border-gray-400">
+                  <Image
+                    src="/images/flux-kontext-image-12.jpg"
+                    alt="Original Image"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Style Grid */}
+            <div className="grid grid-cols-2 gap-4 mb-8">
+              <div className="relative h-80 aspect-[1080/650] rounded-lg overflow-hidden border border-gray-400">
+                <Image
+                  src="/images/flux-kontext-image-13.jpg"
+                  alt="Watercolor Style"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+              <div className="relative h-80 aspect-[1080/650] rounded-lg overflow-hidden border border-gray-400">
+                <Image
+                  src="/images/flux-kontext-image-14.jpg"
+                  alt="Ghibli Style"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+              <div className="relative h-80 aspect-[1080/650] rounded-lg overflow-hidden border border-gray-400">
+                <Image
+                  src="/images/flux-kontext-image-15.jpg"
+                  alt="3D Clay Style"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+              <div className="relative h-80 aspect-[1080/650] rounded-lg overflow-hidden border border-gray-400">
+                <Image
+                  src="/images/flux-kontext-image-16.jpg"
+                  alt="Pixel Art Style"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+            </div>
+
+            {/* Prompts Section */}
+            <div className="text-center">
+              <h3 className="text-sm font-medium tracking-wider mb-6 uppercase">
+                Scene Generation Prompts
+              </h3>
+              <div className="flex flex-col gap-4 text-left">
+                <div className="bg-black/30 rounded-lg p-4 border border-white/10">
+                  <div className="text-white font-semibold text-sm mb-2">
+                    1. Morning Scene
+                  </div>
+                  <p className="text-white/80 text-sm leading-relaxed">
+                    Keeping the original picture style, an alley in Jiangnan in
+                    the early morning has just been washed away by rain. A paper
+                    kite is wrapped around an electric pole, a bamboo basket is
+                    hung under the eaves, and the teahouse at the end of the
+                    alley has just opened its doors, with warm lights spilling
+                    out from inside.
+                  </p>
+                </div>
+                <div className="bg-black/30 rounded-lg p-4 border border-white/10">
+                  <div className="text-white font-semibold text-sm mb-2">
+                    2. Character Addition
+                  </div>
+                  <p className="text-white/80 text-sm leading-relaxed">
+                    Keeping the original style of the picture, a woman in a dark
+                    green cheongsam walks into a rainy alley with an umbrella
+                    and a faintly thoughtful expression on her face. She walks
+                    through the gray bricks and tiled roofs, the raindrops
+                    gently patting her umbrella, and the lanterns on the
+                    roadside gently swaying in the wind.
+                  </p>
+                </div>
+                <div className="bg-black/30 rounded-lg p-4 border border-white/10">
+                  <div className="text-white font-semibold text-sm mb-2">
+                    3. Close-up Shot
+                  </div>
+                  <p className="text-white/80 text-sm leading-relaxed">
+                    Keeping the original picture style, the camera closes in on
+                    a corner of the roof where there is a small bird, giving a
+                    close-up shot of the bird.
+                  </p>
+                </div>
+                <div className="bg-black/30 rounded-lg p-4 border border-white/10">
+                  <div className="text-white font-semibold text-sm mb-2">
+                    4. Shop Detail
+                  </div>
+                  <p className="text-white/80 text-sm leading-relaxed">
+                    Keeping with the original picture style, she passes a
+                    tailor's store with unfinished fabrics hanging in the
+                    window. A cat snoozes on the pediment next to the door,
+                    while inside the store, an old man stitches intently, each
+                    stitch meticulous.
                   </p>
                 </div>
               </div>
