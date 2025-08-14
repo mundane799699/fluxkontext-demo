@@ -103,11 +103,11 @@ export default function Home() {
 
       {/* Style Showcase Section */}
       <section className="py-16 bg-gradient-to-br">
-        <div className="container mx-auto px-4 border border-gray-400 rounded-3xl p-8 lg:p-12 max-w-6xl">
-          <div className="max-w-4xl mx-auto">
+        <div className="container mx-auto px-4 border border-gray-400 rounded-3xl p-4 lg:p-8 max-w-6xl">
+          <div className="mx-auto">
             {/* Original Image Section */}
             <div className="text-center mb-8">
-              <h3 className="text-white text-sm font-medium tracking-wider mb-4 opacity-70">
+              <h3 className="text-sm font-medium tracking-wider mb-4">
                 ORIGINAL
               </h3>
               <div className="flex justify-center">
