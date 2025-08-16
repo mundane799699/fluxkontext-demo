@@ -66,7 +66,7 @@ export default function Home() {
         pendingData={pendingData}
       />
 
-      <section className="py-16">
+      <section className="py-8">
         <div className="container mx-auto">
           <div className="text-center">
             <h2 className="inline-block text-3xl font-bold">
@@ -102,8 +102,8 @@ export default function Home() {
       </section>
 
       {/* Style Showcase Section */}
-      <section className="py-16 bg-gradient-to-br">
-        <div className="container mx-auto px-4 border border-gray-400 rounded-3xl p-4 md:p-8 max-w-6xl">
+      <section className="py-8 bg-gradient-to-br">
+        <div className="container mx-auto px-4 border border-gray-400 rounded-2xl p-4 md:p-8 max-w-6xl">
           <div className="mx-auto">
             {/* Original Image Section */}
             <div className="text-center mb-8">
@@ -207,8 +207,8 @@ export default function Home() {
       </section>
 
       {/* Style Showcase Section */}
-      <section className="py-16 bg-gradient-to-br">
-        <div className="container mx-auto px-4 border border-gray-400 rounded-3xl p-4 md:p-8 max-w-6xl">
+      <section className="py-8 bg-gradient-to-br">
+        <div className="container mx-auto px-4 border border-gray-400 rounded-2xl p-4 md:p-8 max-w-6xl">
           <div className="mx-auto">
             {/* Original Image Section */}
             <div className="text-center mb-8">
@@ -319,6 +319,77 @@ export default function Home() {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-8 bg-gradient-to-br">
+        <div className="container mx-auto max-w-6xl">
+          <div className="mx-auto">
+            {/* Style Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <BeforeAfterComparison
+                beforeImage="/images/flux-kontext-image-17.jpg"
+                afterImage="/images/flux-kontext-image-18.jpg"
+                aspectRatio="aspect-square"
+                showPrompt={false}
+                textAlign="text-left"
+                gridCols="grid-cols-2"
+                prompt="Keep the facial features and expression unchanged. The person is not looking at the camera, a full profile shot."
+              />
+              <BeforeAfterComparison
+                beforeImage="/images/flux-kontext-image-19.jpg"
+                afterImage="/images/flux-kontext-image-20.jpg"
+                aspectRatio="aspect-square"
+                showPrompt={false}
+                textAlign="text-left"
+                gridCols="grid-cols-2"
+                prompt="Change the girl's expression to a smile and then stand in front of the supermarket shelves."
+              />
+              <BeforeAfterComparison
+                beforeImage="/images/flux-kontext-image-21.jpg"
+                afterImage="/images/flux-kontext-image-22.jpg"
+                aspectRatio="aspect-square"
+                showPrompt={false}
+                textAlign="text-left"
+                gridCols="grid-cols-2"
+                prompt="Preserve facial structure.The character is playing the guitar, her gaze is lowered towards the guitar, leaving the back of her head for the audience, and the camera zooms in."
+              />
+              <BeforeAfterComparison
+                beforeImage="/images/flux-kontext-image-23.jpg"
+                afterImage="/images/flux-kontext-image-24.jpg"
+                aspectRatio="aspect-square"
+                showPrompt={false}
+                textAlign="text-left"
+                gridCols="grid-cols-2"
+                prompt="Maintain the setting of the main character Shiba Inu.The Shiba Inu is sitting in the car driving."
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-8">
+        <div className="container mx-auto">
+          <div className="mx-auto mt-8 lg:mt-12">
+            <BeforeAfterComparison
+              beforeImage="/images/flux-kontext-image-25.jpg"
+              afterImage="/images/flux-kontext-image-26.jpg"
+              aspectRatio="aspect-[4/3]"
+              textAlign="text-left"
+              prompt={`Replace "fief" with "Irene." Keep the same font style.`}
+              className="mb-8"
+            />
+
+            <BeforeAfterComparison
+              beforeImage="/images/flux-kontext-image-27.jpg"
+              afterImage="/images/flux-kontext-image-28.jpg"
+              aspectRatio="aspect-square"
+              objectFit="object-contain"
+              textAlign="text-left"
+              prompt={`Keep the font style unchanged, replace "Redefine Your Weekend" with "Procrastinate Professionally"; Replace "Break away from toxic work culture and embrace two days of conscious rest and recharge." with "Call it 'self-directed learning' while rewatching cat videos and Googling 'how can focus."`}
+              className="mb-8"
+            />
           </div>
         </div>
       </section>
