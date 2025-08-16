@@ -9,6 +9,8 @@ import BeforeAfterComparison from "@/components/BeforeAfterComparison";
 import { authClient } from "@/lib/auth-client";
 import { useAuthStore } from "@/store/use-auth";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { Mail } from "lucide-react";
 
 export default function Home() {
   const router = useRouter();
@@ -393,6 +395,150 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <section className="py-12" id="faq">
+        <div className="container mx-auto">
+          {/* FAQ Section */}
+          <div className="bg-white rounded-xl shadow-lg p-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
+              Frequently Asked Questions
+            </h2>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div>
+                <h3 className="font-semibold text-gray-900 mb-2">
+                  What is Flux Context and how does it work?
+                </h3>
+                <p className="text-gray-600">
+                  Flux Context is an advanced online image enhance platform
+                  powered by FLUX KONTEXT AI technology. It uses
+                  state-of-the-art artificial intelligence to enhance, restore,
+                  and transform your images with professional-quality results in
+                  just minutes. Simply upload your image to Flux Context, choose
+                  your enhancement function, and let our Flux Context technology
+                  work its magic.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="font-semibold text-gray-900 mb-2">
+                  How do credits work?
+                </h3>
+                <p className="text-gray-600">
+                  Each image generation costs 1 credit. Credits never expire and
+                  can be used anytime.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="font-semibold text-gray-900 mb-2">
+                  What image quality do I get?
+                </h3>
+                <p className="text-gray-600">
+                  All generated images are high-definition (HD) quality suitable
+                  for professional use.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="font-semibold text-gray-900 mb-2">
+                  Can I refund unused credits?
+                </h3>
+                <p className="text-gray-600">
+                  Credits are non-refundable, but they never expire so you can
+                  use them anytime.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="font-semibold text-gray-900 mb-2">
+                  Is there a subscription option?
+                </h3>
+                <p className="text-gray-600">
+                  Currently we offer pay-as-you-go credits. Subscription plans
+                  are coming soon!
+                </p>
+              </div>
+
+              <div>
+                <h3 className="font-semibold text-gray-900 mb-2">
+                  How long does it take to enhance an image?
+                </h3>
+                <p className="text-gray-600">
+                  Typically, your enhanced image will be ready in 1-3 minutes
+                  using our FLUX KONTEXT AI. The exact time may vary slightly
+                  depending on current server load and the complexity of your
+                  enhancement request.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* footer */}
+      <footer className="bg-gray-50 border-t border-gray-200 py-12">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-8">
+            {/* Company Info */}
+            <div className="md:w-1/2">
+              <div className="flex items-center mb-4">
+                <div className="w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center mr-3">
+                  <span className="text-white font-bold text-sm">f</span>
+                </div>
+                <h3 className="text-xl font-bold text-gray-900">FluxContext</h3>
+              </div>
+              <p className="text-gray-600 mb-4 max-w-md">
+                Transform Your Images with AI-Powered Photo Enhancement using
+                advanced FLUX KONTEXT technology
+              </p>
+              <div className="flex items-center">
+                <div className="w-5 h-5 text-gray-500 mr-2">
+                  <Mail className="w-5 h-5" />
+                </div>
+              </div>
+            </div>
+
+            {/* About Links */}
+            <div>
+              <h4 className="font-semibold text-gray-900 mb-4">About</h4>
+              <ul className="space-y-2">
+                <li>
+                  <Link
+                    href="/pricing"
+                    className="text-gray-600 hover:text-gray-900 transition-colors"
+                  >
+                    Pricing
+                  </Link>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          {/* Bottom Section */}
+          <div className="border-t border-gray-200 mt-8 pt-8">
+            <div className="flex flex-col md:flex-row justify-between items-center">
+              <p className="text-gray-600 text-sm mb-4 md:mb-0">
+                © {new Date().getFullYear()} • FluxContext All rights reserved.
+              </p>
+              <div className="flex space-x-6">
+                <Link
+                  href="/privacy-policy"
+                  className="text-gray-600 hover:text-gray-900 text-sm transition-colors"
+                >
+                  Privacy Policy
+                </Link>
+                <Link
+                  href="/terms-of-service"
+                  className="text-gray-600 hover:text-gray-900 text-sm transition-colors"
+                >
+                  Terms of Service
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
 
       <LoginModal
         isOpen={showLoginModal}

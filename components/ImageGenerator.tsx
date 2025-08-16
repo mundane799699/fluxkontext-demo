@@ -316,7 +316,10 @@ export default function ImageGenerator({
   );
 
   return (
-    <section className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
+    <section
+      className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto"
+      id="image-generator"
+    >
       {/* Left Panel */}
       <div className="bg-white p-6 rounded-xl shadow space-y-6">
         <h2 className="text-xl font-semibold">Upload Photo</h2>

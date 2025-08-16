@@ -168,55 +168,6 @@ export default function PricingPage() {
             </div>
           ))}
         </div>
-
-        {/* FAQ Section */}
-        <div className="bg-white rounded-xl shadow-lg p-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
-            Frequently Asked Questions
-          </h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div>
-              <h3 className="font-semibold text-gray-900 mb-2">
-                How do credits work?
-              </h3>
-              <p className="text-gray-600">
-                Each image generation costs 1 credit. Credits never expire and
-                can be used anytime.
-              </p>
-            </div>
-
-            <div>
-              <h3 className="font-semibold text-gray-900 mb-2">
-                What image quality do I get?
-              </h3>
-              <p className="text-gray-600">
-                All generated images are high-definition (HD) quality suitable
-                for professional use.
-              </p>
-            </div>
-
-            <div>
-              <h3 className="font-semibold text-gray-900 mb-2">
-                Can I refund unused credits?
-              </h3>
-              <p className="text-gray-600">
-                Credits are non-refundable, but they never expire so you can use
-                them anytime.
-              </p>
-            </div>
-
-            <div>
-              <h3 className="font-semibold text-gray-900 mb-2">
-                Is there a subscription option?
-              </h3>
-              <p className="text-gray-600">
-                Currently we offer pay-as-you-go credits. Subscription plans are
-                coming soon!
-              </p>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   );
