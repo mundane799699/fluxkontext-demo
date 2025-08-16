@@ -19,9 +19,9 @@ export default function BeforeAfterComparison({
 }: BeforeAfterComparisonProps) {
   return (
     <div
-      className={`relative bg-gradient-to-br border border-gray-400 rounded-3xl p-8 lg:p-12 max-w-6xl mx-auto ${className}`}
+      className={`relative bg-gradient-to-br border border-gray-400 rounded-3xl p-4 lg:p-12 max-w-6xl mx-auto ${className}`}
     >
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
         {/* Before Image */}
         <div className="space-y-4">
           <div className="text-center">
@@ -33,7 +33,7 @@ export default function BeforeAfterComparison({
             <Image
               src={beforeImage}
               alt={beforeAlt}
-              className="w-full h-[300px] object-cover rounded-2xl shadow-2xl"
+              className="w-full aspect-[1080/650] object-cover rounded-2xl shadow-2xl"
               width={500}
               height={400}
             />
@@ -51,7 +51,7 @@ export default function BeforeAfterComparison({
             <Image
               src={afterImage}
               alt={afterAlt}
-              className="w-full h-[300px] object-cover rounded-2xl shadow-2xl"
+              className="w-full aspect-[1080/650] object-cover rounded-2xl shadow-2xl"
               width={500}
               height={400}
             />

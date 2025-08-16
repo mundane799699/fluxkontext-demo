@@ -428,11 +428,11 @@ export default function ImageGenerator({
               </p>
             )}
           </div>
-          <div className="w-full grid grid-cols-2 gap-4 mt-6">
+          <div className="w-full grid grid-cols-2 gap-2 md:gap-4 mt-6">
             <button
               onClick={handleDownload}
               disabled={!resultImage || isDownloading}
-              className={`w-full bg-gray-200 py-3 rounded-lg font-semibold text-gray-700 hover:bg-gray-300 transition-colors flex items-center justify-center gap-2 ${
+              className={`w-full bg-gray-200 text-xs font-semibold md:text-base p-2 rounded-lg text-gray-700 hover:bg-gray-300 transition-colors flex items-center justify-center gap-2 ${
                 !resultImage || isDownloading
                   ? "opacity-50 cursor-not-allowed"
                   : ""
@@ -443,7 +443,7 @@ export default function ImageGenerator({
             </button>
             <Link
               href="/my-genassets"
-              className="w-full text-center bg-gray-200 py-3 rounded-lg font-semibold text-gray-700 hover:bg-gray-300 transition-colors"
+              className="w-full text-center text-xs md:text-base bg-gray-200 py-3 font-semibold rounded-lg text-gray-700 hover:bg-gray-300 transition-colors"
             >
               My Assets
             </Link>

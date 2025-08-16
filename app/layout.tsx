@@ -34,7 +34,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen`}
       >
         <header className="bg-white z-50 fixed top-0 left-0 right-0 flex justify-between items-center py-3 border-b border-gray-200 h-16 px-4 sm:px-8 lg:pl-12 lg:pr-[calc(3rem+var(--removed-body-scroll-bar-size,0px))]">
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 md:gap-4">
             <Link href="/">
               <span className="text-lg sm:text-xl lg:text-2xl font-bold">
                 FluxContext

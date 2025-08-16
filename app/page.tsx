@@ -67,7 +67,7 @@ export default function Home() {
       />
 
       <section className="py-16">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto">
           <div className="text-center">
             <h2 className="inline-block text-3xl font-bold">
               See What Flux Context Online Image Enhance Can Create
@@ -103,7 +103,7 @@ export default function Home() {
 
       {/* Style Showcase Section */}
       <section className="py-16 bg-gradient-to-br">
-        <div className="container mx-auto px-4 border border-gray-400 rounded-3xl p-4 lg:p-8 max-w-6xl">
+        <div className="container mx-auto px-4 border border-gray-400 rounded-3xl p-4 md:p-8 max-w-6xl">
           <div className="mx-auto">
             {/* Original Image Section */}
             <div className="text-center mb-8">
@@ -111,7 +111,7 @@ export default function Home() {
                 ORIGINAL
               </h3>
               <div className="flex justify-center">
-                <div className="relative h-80 aspect-[1080/650] rounded-lg overflow-hidden border-2 border-gray-400">
+                <div className="relative w-full md:w-1/2 aspect-[1080/650] rounded-lg overflow-hidden border-2 border-gray-400">
                   <Image
                     src="/images/flux-kontext-image-7.jpg"
                     alt="Original Image"
@@ -123,8 +123,8 @@ export default function Home() {
             </div>
 
             {/* Style Grid */}
-            <div className="grid grid-cols-2 gap-4 mb-8">
-              <div className="relative h-80 aspect-[1080/650] rounded-lg overflow-hidden border border-gray-400">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+              <div className="relative w-full aspect-[1080/650] rounded-lg overflow-hidden border border-gray-400">
                 <Image
                   src="/images/flux-kontext-image-8.jpg"
                   alt="Watercolor Style"
@@ -132,7 +132,7 @@ export default function Home() {
                   className="object-cover"
                 />
               </div>
-              <div className="relative h-80 aspect-[1080/650] rounded-lg overflow-hidden border border-gray-400">
+              <div className="relative w-full aspect-[1080/650] rounded-lg overflow-hidden border border-gray-400">
                 <Image
                   src="/images/flux-kontext-image-9.jpg"
                   alt="Ghibli Style"
@@ -140,7 +140,7 @@ export default function Home() {
                   className="object-cover"
                 />
               </div>
-              <div className="relative h-80 aspect-[1080/650] rounded-lg overflow-hidden border border-gray-400">
+              <div className="relative w-full aspect-[1080/650] rounded-lg overflow-hidden border border-gray-400">
                 <Image
                   src="/images/flux-kontext-image-10.jpg"
                   alt="3D Clay Style"
@@ -148,7 +148,7 @@ export default function Home() {
                   className="object-cover"
                 />
               </div>
-              <div className="relative h-80 aspect-[1080/650] rounded-lg overflow-hidden border border-gray-400">
+              <div className="relative w-full aspect-[1080/650] rounded-lg overflow-hidden border border-gray-400">
                 <Image
                   src="/images/flux-kontext-image-11.jpg"
                   alt="Pixel Art Style"
@@ -208,7 +208,7 @@ export default function Home() {
 
       {/* Style Showcase Section */}
       <section className="py-16 bg-gradient-to-br">
-        <div className="container mx-auto px-4 border border-gray-400 rounded-3xl p-4 lg:p-8 max-w-6xl">
+        <div className="container mx-auto px-4 border border-gray-400 rounded-3xl p-4 md:p-8 max-w-6xl">
           <div className="mx-auto">
             {/* Original Image Section */}
             <div className="text-center mb-8">
@@ -216,7 +216,7 @@ export default function Home() {
                 ORIGINAL
               </h3>
               <div className="flex justify-center">
-                <div className="relative h-80 aspect-[1080/650] rounded-lg overflow-hidden border-2 border-gray-400">
+                <div className="relative w-full md:w-1/2 aspect-[1080/650] rounded-lg overflow-hidden border-2 border-gray-400">
                   <Image
                     src="/images/flux-kontext-image-12.jpg"
                     alt="Original Image"
@@ -228,8 +228,8 @@ export default function Home() {
             </div>
 
             {/* Style Grid */}
-            <div className="grid grid-cols-2 gap-4 mb-8">
-              <div className="relative h-80 aspect-[1080/650] rounded-lg overflow-hidden border border-gray-400">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+              <div className="relative w-full aspect-[1080/650] rounded-lg overflow-hidden border border-gray-400">
                 <Image
                   src="/images/flux-kontext-image-13.jpg"
                   alt="Watercolor Style"
@@ -237,7 +237,7 @@ export default function Home() {
                   className="object-cover"
                 />
               </div>
-              <div className="relative h-80 aspect-[1080/650] rounded-lg overflow-hidden border border-gray-400">
+              <div className="relative w-full aspect-[1080/650] rounded-lg overflow-hidden border border-gray-400">
                 <Image
                   src="/images/flux-kontext-image-14.jpg"
                   alt="Ghibli Style"
@@ -245,7 +245,7 @@ export default function Home() {
                   className="object-cover"
                 />
               </div>
-              <div className="relative h-80 aspect-[1080/650] rounded-lg overflow-hidden border border-gray-400">
+              <div className="relative w-full aspect-[1080/650] rounded-lg overflow-hidden border border-gray-400">
                 <Image
                   src="/images/flux-kontext-image-15.jpg"
                   alt="3D Clay Style"
@@ -253,7 +253,7 @@ export default function Home() {
                   className="object-cover"
                 />
               </div>
-              <div className="relative h-80 aspect-[1080/650] rounded-lg overflow-hidden border border-gray-400">
+              <div className="relative w-full aspect-[1080/650] rounded-lg overflow-hidden border border-gray-400">
                 <Image
                   src="/images/flux-kontext-image-16.jpg"
                   alt="Pixel Art Style"
