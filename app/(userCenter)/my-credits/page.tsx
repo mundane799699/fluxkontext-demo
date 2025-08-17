@@ -47,7 +47,13 @@ const MyCreditsPage = () => {
               Error: {error}
             </div>
           ) : (
-            <div className="text-3xl font-bold text-blue-600">{credits}</div>
+            <div
+              className={`text-3xl font-bold ${
+                credits === 0 ? "text-gray-500" : "text-green-600"
+              }`}
+            >
+              {credits}
+            </div>
           )}
         </div>
       </div>
